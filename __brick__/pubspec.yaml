@@ -1,0 +1,190 @@
+name: {{project_name}}
+description: A new Flutter project.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `flutter pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.17.3 <3.0.0"
+
+# Dependencies specify other packages that your package needs in order to work.
+# To automatically upgrade your package dependencies to the latest versions
+# consider running `flutter pub upgrade --major-versions`. Alternatively,
+# dependencies can be manually updated by changing the version numbers below to
+# the latest version available on pub.dev. To see which dependencies have newer
+# versions available, run `flutter pub outdated`.
+dependencies:
+  flutter:
+    sdk: flutter
+
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+  flutter_spinkit: ^5.1.0
+  # Service locator
+  get_it: ^7.2.0
+  # Value equality
+  equatable: ^2.0.3
+  # Functional programming thingies
+  dartz: ^0.10.1
+  # Remote API
+  connectivity_plus: ^2.2.1
+  network_manager: ^0.1.2
+  # Local cache
+  shared_preferences: ^2.0.13
+  objectbox: ^1.4.1
+  objectbox_flutter_libs: any
+  provider: ^6.0.2
+  get: ^4.6.3
+  artemis_ui_kit: ^0.0.7
+  artemis_utils: ^0.0.5
+  flutter_vector_icons: ^1.0.0
+  intl: ^0.17.0
+  dio: ^4.0.6
+  go_router: ^3.1.0
+  shimmer: ^2.0.0
+  animated_widgets: ^1.1.0
+  path_provider: ^2.0.10
+  google_fonts: ^3.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/animations/
+    - assets/data/
+    - assets/sounds/
+    - assets/fonts/
+  fonts:
+    - family: ArtemisIcons
+      fonts:
+        - asset: assets/fonts/ArtemisIcons.ttf
+    - family: SeatMapIcons
+      fonts:
+        - asset: assets/fonts/SeatMapIcons.ttf
+    - family: ArtemisDcsIcons
+      fonts:
+        - asset: assets/fonts/ArtemisDcsIcons.ttf
+    - family: CustomIcons
+      fonts:
+        - asset: assets/fonts/CustomIcons.ttf
+    - family: BrsIcons
+      fonts:
+        - asset: assets/fonts/BRSIcons.ttf
+    - family: Consola
+      fonts:
+        - asset: assets/fonts/consola/Consola.ttf
+
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/opensans/OpenSans-Regular.ttf
+        - asset: assets/fonts/opensans/OpenSans-Italic.ttf
+          style: italic
+        - asset: assets/fonts/opensans/OpenSans-Light.ttf
+          weight: 200
+        - asset: assets/fonts/opensans/OpenSans-LightItalic.ttf
+          weight: 200
+          style: italic
+        - asset: assets/fonts/opensans/OpenSans-SemiBold.ttf
+          weight: 400
+        - asset: assets/fonts/opensans/OpenSans-SemiBoldItalic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/opensans/OpenSans-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/opensans/OpenSans-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/opensans/OpenSans-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/opensans/OpenSans-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
+    - family: Montserrat
+      fonts:
+        - asset: assets/fonts/montserrat/Montserrat-Regular.ttf
+        - asset: assets/fonts/montserrat/Montserrat-Italic.ttf
+          style: italic
+        - asset: assets/fonts/montserrat/Montserrat-Light.ttf
+          weight: 200
+        - asset: assets/fonts/montserrat/Montserrat-LightItalic.ttf
+          weight: 200
+          style: italic
+        - asset: assets/fonts/montserrat/Montserrat-SemiBold.ttf
+          weight: 400
+        - asset: assets/fonts/montserrat/Montserrat-SemiBoldItalic.ttf
+          weight: 400
+          style: italic
+        - asset: assets/fonts/montserrat/Montserrat-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/montserrat/Montserrat-BoldItalic.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/montserrat/Montserrat-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/montserrat/Montserrat-ExtraBoldItalic.ttf
+          weight: 800
+          style: italic
+    - family: Signika
+      fonts:
+        - asset: assets/fonts/signika/SignikaNegative-Regular.ttf
+        - asset: assets/fonts/signika/SignikaNegative-Light.ttf
+          weight: 200
+        - asset: assets/fonts/signika/SignikaNegative-SemiBold.ttf
+          weight: 400
+        - asset: assets/fonts/signika/SignikaNegative-Bold.ttf
+          weight: 700
+
+objectbox:
+  # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).
+  # output_dir: custom
+  # Or optionally specify the lib and test output folder separately.
+  output_dir:
+    lib: core/data_base
+  #   test: other
+
+msix_config:
+  display_name: {{project_name.titleCase()}}
+  publisher_display_name: ABOMIS Innovations Inc.
+  identity_name: ABOMISInnovationsInc.AbomisDCS
+  publisher: CN=2F524553-90DB-4FE5-B917-C1F735CC041B
+  msix_version: 1.0.0.0
+  icons_background_color: "#ffffff"
+  architecture: x64
+  capabilities: "internetClient"
+
+  store: false
+  #  publisher: CN=BF212345-5644-46DF-8668-012044C1B138
+  languages: "en-us"
+#  logo_path: "LOGO PATH HERE"
+#  output_path: "OUTPUT PATH HERE"
+  output_name: {{project_name.titleCase()}} Installer
+#  app_installer: #<-- app installer configuration
+#    publish_folder_path: "PubFolderPath"
+#    hours_between_update_checks: 0
+#    automatic_background_task: false
+#    update_blocks_activation: false
+#    show_prompt: true
+#    force_update_from_any_version: false

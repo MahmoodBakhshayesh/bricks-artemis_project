@@ -1,0 +1,215 @@
+{
+  "Compartments": [
+    {
+      "CabinIndex": 0,
+      "CabinType": "F",
+      "Header": "AB-CD",
+      "Seats": "2-0-2",
+      "LinesCount": 2,
+      "SeatCount": 8,
+      "Lines": [
+        {
+          "Number": 0,
+          "Cells": [
+            {
+              "Letter": "A"
+            },
+            {
+              "Letter": "B"
+            },
+            {
+              "Letter": "-"
+            },
+            {
+              "Letter": "C"
+            },
+            {
+              "Letter": "D"
+            }
+          ]
+        },
+        {
+          "Number": 1,
+          "Cells": [
+            {
+              "Letter": "A",
+              "Attributes": "Exit,Window,Aile",
+              "Status": "",
+              "PaxID": 1000
+            },
+            {
+              "Letter": "B",
+              "Attributes": "Aile",
+              "Status": ""
+            },
+            {
+              "Letter": "-",
+              "Type": "Aile",
+              "Status": ""
+            },
+            {
+              "Letter": "C",
+              "Attributes": "Seat",
+              "Status": ""
+            },
+
+            {
+              "Letter": "D",
+              "Type": "Seat",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Number": 2,
+          "Cells": [
+            {
+              "Letter": "A",
+              "Attributes": "Exit,Window,Aile",
+              "Status": "",
+              "PaxID": 1000
+            },
+            {
+              "Letter": "B",
+              "Attributes": "Aile",
+              "Status": ""
+            },
+            {
+              "Letter": "-",
+              "Type": "Aile",
+              "Status": ""
+            },
+            {
+              "Letter": "C",
+              "Attributes": "Seat",
+              "Status": ""
+            },
+
+            {
+              "Letter": "D",
+              "Type": "Seat",
+              "Status": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "CabinIndex": 1,
+      "CabinType": "B",
+      "Header": "ABC-DEF",
+      "Seats": "3-0-3",
+      "LinesCount": 13,
+      "SeatCount": 100,
+      "Lines": [
+        {
+          "Number": 0,
+          "Cells": [
+            {
+              "Letter": "A"
+            },
+            {
+              "Letter": "B"
+            },
+            {
+              "Letter": "C"
+            },
+            {
+              "Letter": "-"
+            },
+            {
+              "Letter": "D"
+            },
+            {
+              "Letter": "E"
+            },
+            {
+              "Letter": "F"
+            }
+          ]
+        },
+        {
+          "Number": 1,
+          "Cells": [
+            {
+              "Letter": "A",
+              "Attributes": "Exit,Window,Aile",
+              "Status": "",
+              "PaxID": 1000
+            },
+            {
+              "Letter": "B",
+              "Attributes": "Aile",
+              "Status": ""
+            },
+            {
+              "Letter": "C",
+              "Attributes": "Seat",
+              "Status": ""
+            },
+            {
+              "Letter": "C",
+              "Type": "Aile",
+              "Status": ""
+            },
+            {
+              "Letter": "D",
+              "Type": "Seat",
+              "Status": ""
+            },
+            {
+              "Letter": "E",
+              "Type": "Seat",
+              "Status": ""
+            },
+            {
+              "Letter": "F",
+              "Type": "Seat",
+              "Status": ""
+            }
+          ]
+        },
+        {
+          "Number": 1,
+          "Cells": [
+            {
+              "Letter": "A",
+              "Attributes": "Exit,Window,Aile",
+              "Status": "",
+              "PaxID": 1000
+            },
+            {
+              "Letter": "B",
+              "Attributes": "Exit",
+              "Status": ""
+            },
+            {
+              "Letter": "C",
+              "Attributes": "Exit",
+              "Status": ""
+            },
+            {
+              "Letter": "-",
+              "Status": ""
+            },
+            {
+              "Letter": "D",
+              "Attributes": "Exit",
+              "Status": ""
+            },
+            {
+              "Letter": "E",
+              "Attributes": "Exit",
+              "Status": ""
+            },
+            {
+              "Letter": "F",
+              "Attributes": "Exit",
+              "Status": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

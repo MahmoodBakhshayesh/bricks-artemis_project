@@ -1,0 +1,217 @@
+{
+  "Token": "2094AF74-6578-4569-A865-66C931A273D9",
+  "UserSettings": {
+    "Name": "Shokuhi"
+  },
+  "SystemSettings": {
+    "PassengerStatuses": [
+      {
+        "ID": 1,
+        "Title": "Ready",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 2,
+        "Title": "Checked",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 3,
+        "Title": "Boarded",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 4,
+        "Title": "Reserved",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": -1,
+        "Title": "DenyBoard",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": -2,
+        "Title": "Dechecked",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": -3,
+        "Title": "Deboard",
+        "Color": "FFFFFF"
+      }
+    ],
+    "SeatStatuses": [
+      {
+        "ID": 1,
+        "Title": "Ready",
+        "Description": "Empty",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 2,
+        "Title": "Locked",
+        "Description": "Locked By ACM",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 3,
+        "Title": "Reserved",
+        "Description": "Reserved for Passenger",
+        "Color": "FFFFFF"
+      }
+    ],
+    "AgeGroups": [
+      {
+        "ID": 1,
+        "Title": "ADL",
+        "Description": "Adult",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 2,
+        "Title": "Child",
+        "Description": "Adult",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 3,
+        "Title": "Infant",
+        "Description": "Adult",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 4,
+        "Title": "Reserved",
+        "Description": "Adult",
+        "Color": "FFFFFF"
+      }
+    ],
+    "SexGroups": [
+      {
+        "ID": 1,
+        "Title": "MR",
+        "Description": "Male",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 2,
+        "Title": "MS",
+        "Description": "Female",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 3,
+        "Title": "UK",
+        "Description": "Unknown",
+        "Color": "FFFFFF"
+      }
+    ],
+    "ClassTypes": [
+      {
+        "ID": 1,
+        "Title": "F",
+        "Description": "First",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 2,
+        "Title": "B",
+        "Description": "Business",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 3,
+        "Title": "E",
+        "Description": "Economy",
+        "Color": "FFFFFF"
+      }
+    ],
+    "FlightStatuses": [
+      {
+        "ID": 1,
+        "Title": "Not Open",
+        "Description": "Not Open",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 2,
+        "Title": "Open",
+        "Description": "Open",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 3,
+        "Title": "Protected",
+        "Description": "Protected",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 4,
+        "Title": "Closed",
+        "Description": "Closed",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 5,
+        "Title": "Finalized",
+        "Description": "Finalized",
+        "Color": "FFFFFF"
+      }
+    ],
+    "FlightGeneralStatuses": [
+      {
+        "ID": 1,
+        "Title": "On Time",
+        "Description": "On Time",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 2,
+        "Title": "Delayed",
+        "Description": "Delayed",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 3,
+        "Title": "Canceled",
+        "Description": "Canceled",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 4,
+        "Title": "Departed",
+        "Description": "Departed",
+        "Color": "FFFFFF"
+      }
+    ],
+    "SSRS": [
+      {
+        "ID": 1,
+        "Title": "BLND",
+        "Description": "Blind",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 1,
+        "Title": "WLCH",
+        "Description": "WheelChair",
+        "Color": "FFFFFF"
+      }
+    ],
+    "SeatAttributes": [
+      {
+        "ID": 1,
+        "Title": "Win",
+        "Description": "Window",
+        "Color": "FFFFFF"
+      },
+      {
+        "ID": 2,
+        "Title": "Ail",
+        "Description": "Aile",
+        "Color": "FFFFFF"
+      }
+    ]
+  }
+}
