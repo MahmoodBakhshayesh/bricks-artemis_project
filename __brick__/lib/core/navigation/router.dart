@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../screens/login/login_state.dart';
 import '../../screens/login/login_view.dart';
+import '../../screens/login/login_view_phone.dart';
+import '../../screens/login/login_view_tablet.dart';
 import '../constants/route_names.dart';
 import '../dependency_injection.dart';
+import '../platform/device_info.dart';
 
 class MyRouter {
   MyRouter._();
@@ -21,7 +24,17 @@ class MyRouter {
         name: RouteNames.login,
         path: '/login',
         title: 'Login',
-        builder: (BuildContext context, GoRouterState state) => LoginView(),
+        builder:(BuildContext context, GoRouterState state) {
+          switch(DeviceInfo.deviceType(context)){
+            case DeviceType.phone:
+              return LoginViewPhone();
+            case DeviceType.tablet:
+              return LoginViewTablet();
+            case DeviceType.desktop:
+              return LoginView();
+          }
+
+        },
       ),
 
     ];
@@ -29,7 +42,7 @@ class MyRouter {
       initialLocation: '/cuppsScreen',
       refreshListenable: getIt<LoginState>(),
       routes: _routes,
-      redirect: (state) {
+      redirect: (_,state) {
         LoginState loginState = getIt<LoginState>();
         // if the user is not logged in, they need to login
         final loggedIn = loginState.user != null;
@@ -155,7 +168,8 @@ class MyRouter {
 
   static List<MyRoute> get routes => _routes;
 
-  static BuildContext get context => _router.navigator!.context;
+  // static BuildContext get context => _router.navigator!.context;
+  static BuildContext get context => _router.routeConfiguration.navigatorKey.currentState!.context;
 }
 
 class MyRoute extends GoRoute {

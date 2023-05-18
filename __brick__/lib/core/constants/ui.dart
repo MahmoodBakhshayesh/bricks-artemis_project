@@ -88,55 +88,68 @@ class MyColors {
 class MyTheme {
   MyTheme._();
 
-  static ThemeData light = ThemeData(
-      fontFamily: "OpenSans",
-      primaryColor: MyColors.mainColor,
-      canvasColor: Colors.transparent,
-      brightness: Brightness.light,
-      disabledColor: MyColors.brownGrey,
-      scaffoldBackgroundColor: Colors.white,
-      timePickerTheme: const TimePickerThemeData(),
-      dividerTheme: const DividerThemeData(color: MyColors.lineColor, indent: 1, space: 1),
-      appBarTheme: const AppBarTheme(
-        titleTextStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: MyColors.white1),
-        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: MyColors.mainColor, statusBarBrightness: Brightness.dark),
-        backgroundColor: MyColors.mainColor,
-        iconTheme: IconThemeData(color: MyColors.slateBlue),
-      ),
-      textTheme: const TextTheme(
-        headline1: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: MyColors.black),
-        headline2: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: MyColors.black),
-        headline3: TextStyle(fontSize: 20, color: MyColors.black),
-        headline4: TextStyle(fontSize: 18, color: MyColors.black, fontWeight: FontWeight.bold),
-        headline5: TextStyle(fontSize: 16, color: MyColors.black),
-        headline6: TextStyle(fontSize: 14, color: MyColors.black),
-        subtitle1: TextStyle(fontSize: 12, color: MyColors.black),
-        subtitle2: TextStyle(fontSize: 10, color: MyColors.black),
-      ),
-      textButtonTheme: TextButtonThemeData(
-          style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-              backgroundColor: MyColors.lightIshBlue,
-              primary: Colors.white)),
-      outlinedButtonTheme: OutlinedButtonThemeData(
-          style: TextButton.styleFrom(
-              textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
-              primary: MyColors.lightIshBlue,
-              side: const BorderSide(color: MyColors.lightIshBlue, width: 2))),
-      colorScheme: ColorScheme.fromSwatch(primarySwatch: const MaterialColor(0xFF4d6fff, MyColors.materialColor)).copyWith(
-        secondary: MyColors.darkMint,
-        primary: MyColors.mainColor,
-      ),
-      dataTableTheme: const DataTableThemeData(headingRowHeight: 35, dataRowHeight: 40, columnSpacing: 4));
-
-  static ThemeData dark = ThemeData(
+  static ThemeData lightAbomis = ThemeData(
+    useMaterial3: true,
     fontFamily: "OpenSans",
-    primaryColor: Colors.deepPurple,
+    primaryColor: MyColors.mainColor,
+    canvasColor: Colors.transparent,
+    brightness: Brightness.light,
+    disabledColor: MyColors.brownGrey,
+    scaffoldBackgroundColor: Colors.white,
+    tabBarTheme: TabBarTheme(labelPadding: EdgeInsets.zero, labelColor: Colors.blue, unselectedLabelColor: Colors.blue.withOpacity(0.5)),
+    timePickerTheme: const TimePickerThemeData(),
+    dividerTheme: const DividerThemeData(color: MyColors.lineColor, indent: 1, space: 1),
+    appBarTheme: const AppBarTheme(
+      titleTextStyle: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: MyColors.white1),
+      systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: MyColors.white1, statusBarBrightness: Brightness.dark),
+      backgroundColor: MyColors.white1,
+      iconTheme: IconThemeData(color: MyColors.slateBlue),
+    ),
+    // fontFamily: "OpenSans",
+    textTheme: const TextTheme(
+      headlineLarge: TextStyle(fontSize: 18, color: MyColors.black, fontWeight: FontWeight.bold),
+      headlineMedium: TextStyle(fontSize: 18, color: MyColors.black, fontWeight: FontWeight.bold),
+      headlineSmall: TextStyle(fontSize: 16, color: MyColors.black),
+      displayLarge: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: MyColors.black),
+      displayMedium: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: MyColors.black),
+      displaySmall: TextStyle(fontSize: 20, color: MyColors.black),
+      titleLarge: TextStyle(fontSize: 14, color: MyColors.black),
+      titleMedium: TextStyle(fontSize: 14, color: MyColors.black),
+      titleSmall: TextStyle(fontSize: 14, color: MyColors.black),
+    ),
     textButtonTheme: TextButtonThemeData(
-        style: TextButton.styleFrom(
-      primary: Colors.deepOrange,
-    )),
-    colorScheme: ColorScheme.fromSwatch().copyWith(primary: Colors.deepPurple, secondary: Colors.grey),
+      style: TextButton.styleFrom(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 8,
+        ),
+        textStyle: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
+        backgroundColor: MyColors.lightIshBlue,
+        foregroundColor: Colors.white,
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: TextButton.styleFrom(
+        textStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600),
+        foregroundColor: MyColors.lightIshBlue,
+        side: const BorderSide(color: MyColors.lightIshBlue, width: 2),
+      ),
+    ),
+    colorScheme: ColorScheme.fromSwatch(
+      primarySwatch: const MaterialColor(
+        0xFF4d6fff,
+        MyColors.materialColor,
+      ),
+    ).copyWith(
+      secondary: MyColors.darkMint,
+      primary: MyColors.mainColor,
+    ),
+    dataTableTheme: const DataTableThemeData(
+      headingRowHeight: 35,
+      dataRowMaxHeight: 40,
+      columnSpacing: 4,
+    ),
+    cardTheme: const CardTheme(
+      shape: RoundedRectangleBorder(side: BorderSide(color: MyColors.lineColor)),
+    ),
   );
 }
