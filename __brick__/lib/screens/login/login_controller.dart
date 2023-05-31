@@ -1,66 +1,42 @@
-import 'dart:developer';
-import 'package:artemis_utils/artemis_utils.dart';
-import '../../core/constants/share_prefrences_keys.dart';
-import '../../core/dependency_injection.dart';
-import '../../core/interfaces/basic_class.dart';
-import '../../core/interfaces/controller.dart';
-import '../../core/util/app_config.dart';
-import '../../core/util/encryptor.dart';
-import '../../core/util/failure_handler.dart';
-import '../../screens/login/login_repository.dart';
-import 'usecases/login_usecase.dart';
+import '../../core/abstracts/controller_abs.dart';
+import '../../core/abstracts/device_info_service_abs.dart';
+import '../../core/classes/new_version_class.dart';
+import '../../core/classes/user_class.dart';
+import '../../core/navigation/route_names.dart';
+import '../../core/platform/device_info.dart';
+import '../../core/util/handlers/failure_handler.dart';
+import '../../initialize.dart';
 import 'login_state.dart';
+import 'usecases/login_usecase.dart';
 
 class LoginController extends MainController {
-  final LoginState loginState = getIt<LoginState>();
-  final LoginRepository loginRepository = getIt<LoginRepository>();
-  late LoginUseCase loginUseCase = LoginUseCase(repository: loginRepository);
+  late LoginState loginState = ref.read(loginProvider);
 
-  @override
-  void onCreate() {
-    loadPreferences();
-  }
+  Future<User?> login() async {
+    User? user;
+    DeviceInfoService deviceInfoService = getIt<DeviceInfoService>();
+    DeviceInfo deviceInfo = deviceInfoService.getInfo();
 
+    String username = loginState.usernameC.text;
+    String password = loginState.passwordC.text;
+    String al = loginState.alC.text;
 
-  void login({required String username, required String password}) async {
-
-    MyDeviceInfo deviceInfo = getIt<MyDeviceInfo>();
+    LoginUseCase loginUsecase = LoginUseCase();
     LoginRequest loginRequest = LoginRequest(
-      domain: "Windows",
-      // domain: "",
-      company: deviceInfo.company,
-      model: deviceInfo.deviceModel,
-      isWifi: true,
       username: username,
       password: password,
-      newPassword: password,
-      appName: AppConfig.instance!.flavor!.name,
-      osVersion: deviceInfo.osVersion,
-      versionNum: deviceInfo.versionNumber,
-      device: deviceInfo.deviceType,
-      deviceId: deviceInfo.deviceKey,
-      isApplication: true,
-      flavorName: AppConfig.instance!.flavor!.name,
+      newPassword: '',
+      deviceInfo: deviceInfo,
+      al: al,
+      cachedUser: null,
     );
-    final fOrUser = await loginUseCase(request: loginRequest);
+    final fOrR = await loginUsecase(request: loginRequest);
 
-    fOrUser.fold((f) => FailureHandler.handle(f, retry: () => login(username: username, password: password)), (user) async {
-      loginState.setUser(user);
-      BasicClass.initialize(user.settings);
-      prefs.setString(SpKeys.username, username);
-      prefs.setString(SpKeys.password, password);
-
-      ///TODO Login Success
+    fOrR.fold((f) => FailureHandler.handle(f, retry: () => login()), (r) {
+      user = r.user;
     });
-    loginState.setLoginLoading(false);
+    return user;
   }
 
-
-  loadPreferences() {
-    String user = prefs.getString(SpKeys.username) ?? "";
-    String pass = prefs.getString(SpKeys.password) ?? "";
-    loginState.usernameC.text = user;
-    loginState.passwordC.text = pass;
-  }
-
+  void downloadNewVersion(NewVersion newVersion) {}
 }

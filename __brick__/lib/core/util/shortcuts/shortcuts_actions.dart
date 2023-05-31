@@ -1,8 +1,9 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import '../../constants/route_names.dart';
-import '../../dependency_injection.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import '../../../initialize.dart';
 import '../../navigation/navigation_service.dart';
+import '../../navigation/route_names.dart';
 import '../../navigation/router.dart';
 import 'app_shortcuts.dart';
 
@@ -12,20 +13,26 @@ class SelectAllAction extends Action<SelectAllIntent> {
   final String model;
 
   @override
-  void invoke(covariant SelectAllIntent intent) => print(model);
+  void invoke(covariant SelectAllIntent intent) => log(model);
 }
 
 class ESCAction extends Action<ESCIntent> {
   final NavigationService navigationService = getIt<NavigationService>();
+  final WidgetRef ref = getIt<WidgetRef>();
+
   ESCAction();
 
   @override
   void invoke(covariant ESCIntent intent) {
-    if(MyRouter.currentRouteStack.last.name==RouteNames.login){
-      /// do stuff here
+
+    String route = ref.read(routerProvider).location;
+    RouteNames r = RouteNames.values.firstWhere((element) => element.title == route);
+    log("ESC Pressed");
+    if (navigationService.isDialogOpened) {
+      print("Dialogs Are Detected Poping");
+      navigationService.popDialog();
+    } else {
     }
-    log("ESC Pressed 2");
   }
 }
-
 

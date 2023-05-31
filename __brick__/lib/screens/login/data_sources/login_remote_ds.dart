@@ -1,38 +1,29 @@
-import 'dart:developer';
+import 'package:flutter/foundation.dart';
+import '../../../core/abstracts/exception_abs.dart';
+import '../../../core/abstracts/response_abs.dart';
 import '../../../core/constants/apis.dart';
-import '../../../core/error/exception.dart';
-import '../../../screens/login/interfaces/login_data_source_interface.dart';
-import 'package:network_manager/network_manager.dart';
-import '../../../core/classes/user_class.dart';
+import '../../../core/platform/network_manager.dart';
+import '../interfaces/login_data_source_interface.dart';
 import '../usecases/login_usecase.dart';
+import '../usecases/server_select_usecase.dart';
 import 'login_local_ds.dart';
 
 class LoginRemoteDataSource implements LoginDataSourceInterface {
-  final LoginLocalDataSource localDataSource;
+  final LoginLocalDataSource localDataSource = LoginLocalDataSource();
+  final NetworkManager networkManager = NetworkManager();
 
-  LoginRemoteDataSource(this.localDataSource);
+  LoginRemoteDataSource();
 
   @override
-  Future<User> login({required LoginRequest loginRequest}) async {
-    NetworkRequest loginNR = NetworkRequest(api: Apis.baseUrl, data: loginRequest.toJson(),timeOut: const Duration(days: 1));
-    NetworkResponse loginResponse = await loginNR.post();
-
-    if (loginResponse.responseStatus) {
-      try {
-        User user = User.fromJson(loginResponse.responseBody["Body"]);
-        // User user = User.example();
-
-        return user;
-      } catch (e, trace) {
-        throw ParseException(message: e.toString(), trace: trace);
-      }
-    } else {
-      throw ServerException(
-        code: loginResponse.responseCode,
-        message: loginResponse.extractedMessage!,
-        trace: StackTrace.fromString("LoginRemoteDataSource.login"),
-      );
-    }
+  Future<LoginResponse> login({required LoginRequest request}) async {
+    Response res = await networkManager.post(request);
+    LoginResponse loginResponse = await compute(LoginResponse.fromResponse,res);
+    return loginResponse;
   }
 
+  @override
+  Future<ServerSelectResponse> serverSelect({required ServerSelectRequest request}) async {
+    Response res = await networkManager.post(request);
+    return ServerSelectResponse.fromResponse(res);
+  }
 }

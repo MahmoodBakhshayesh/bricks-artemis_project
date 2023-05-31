@@ -1,50 +1,22 @@
-import 'dart:developer';
-import 'dart:typed_data';
-
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../core/classes/user_class.dart';
 
-class LoginState with ChangeNotifier {
-  setState() => notifyListeners();
+final loginProvider = ChangeNotifierProvider<LoginState>((_) => LoginState());
 
-  bool _loginLoading = false;
-  bool get loginLoading => _loginLoading;
-  void setLoginLoading(bool val) {
-    _loginLoading = val;
-    notifyListeners();
-  }
+class LoginState extends ChangeNotifier {
+  void setState() => notifyListeners();
 
-  String _message = "Hello";
-  String get message => _message;
-  void setMessage(String msg) {
-    _message = msg;
-    notifyListeners();
-  }
+  User? admin;
+  TextEditingController usernameC= TextEditingController();
+  TextEditingController passwordC= TextEditingController();
+  TextEditingController alC= TextEditingController();
 
-  TextEditingController usernameC = TextEditingController();
-  TextEditingController passwordC = TextEditingController();
-
-  RxString rxTest = "".obs;
-
-
-  List<User> _users = [];
-  List<User> get users => _users;
-  void setUsers(List<User> ul) {
-    _users = ul;
-    notifyListeners();
-  }
-
-  User? _user;
-  User? get user=>_user;
-  void setUser(User? u){
-    _user = u;
-    notifyListeners();
-  }
-
-  Uint8List? imageData;
-
-  bool showPassword = false;
+  bool loadingLogin = false;
 
 }
+
+
+final userProvider = StateProvider<User?>((ref) => null);
+final adminProvider = StateProvider<User?>((ref) => null);

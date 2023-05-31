@@ -1,48 +1,51 @@
-import 'settings_class.dart';
+import 'package:flutter/foundation.dart';
 
+@immutable
 class User {
-  int? id;
-  String username;
-  String password;
-  String token;
-  Settings settings;
+  final int id;
+  final String username;
+  final String password;
+  final String token;
 
-  User({
+  const User({
     required this.id,
     required this.username,
     required this.password,
     required this.token,
-    required this.settings,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json["ID"]??1,
-    username: json["Username"]??"",
-    password: json["Password"]??"",
-    token: json["Token"],
-    settings: Settings.fromJson(json),
-  );
-
-  Map<String, dynamic> toJson() {
-    Map<String, dynamic> settingJson = settings.toJson();
-    settingJson.putIfAbsent("Username", () => username);
-    settingJson.putIfAbsent("Password", () => password);
-    settingJson.putIfAbsent("ID", () => id);
-
-    return settingJson;
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json["ID"],
+      username: json["Username"],
+      password: json["Password"],
+      token: json["Token"],
+    );
   }
 
+
+  factory User.empty() {
+    return User(
+      id: 0,
+      username: "Test",
+      password: "Pass",
+      token: "123",
+    );
+  }
+
+  Map<String,dynamic> toJson(){
+    return {
+      "ID":id,
+      "Username":username,
+      "Password":password,
+      "Token":token
+    };
+  }
 
   @override
-  String toString() {
-    return "ID:$id Username:$username Password:$password Token:$token";
-  }
+  bool operator ==(Object other) => other is User && username == other.username;
 
-  factory User.example() => User(
-    id: 1,
-    username: "Test",
-    password: "Test",
-    token: "TOKEN",
-    settings: Settings.fromJson({}),
-  );
+  @override
+  int get hashCode => username.hashCode;
+
 }

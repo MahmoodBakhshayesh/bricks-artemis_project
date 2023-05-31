@@ -1,6 +1,7 @@
-import '../../../core/classes/user_class.dart';
 import '../usecases/login_usecase.dart';
+import '../usecases/server_select_usecase.dart';
 
 abstract class LoginDataSourceInterface {
-  Future<User> login({required LoginRequest loginRequest});
+  Future<LoginResponse> login({required LoginRequest request});
+  Future<ServerSelectResponse> serverSelect({required ServerSelectRequest request});
 }

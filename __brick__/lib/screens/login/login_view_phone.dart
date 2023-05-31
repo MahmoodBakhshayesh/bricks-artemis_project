@@ -1,100 +1,79 @@
-import 'dart:ffi';
-import 'package:artemis_ui_kit/artemis_ui_kit.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:brs_panel/initialize.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:get/get.dart';
-import '../../core/constants/route_names.dart';
-import '../../core/dependency_injection.dart';
-import 'package:provider/provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../core/util/shortcuts/app_shortcuts.dart';
+import '../../widgets/MyButton.dart';
+import '../../widgets/MyTextField.dart';
 import 'login_controller.dart';
 import 'login_state.dart';
 
 class LoginViewPhone extends StatelessWidget {
-  LoginViewPhone({Key? key}) : super(key: key);
-  final LoginController loginController = getIt<LoginController>();
+  static LoginController myLoginController = getIt<LoginController>();
+  const LoginViewPhone({super.key});
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    LoginState loginState = context.watch<LoginState>();
-    return Scaffold(
-      backgroundColor: theme.primaryColor,
-      body: Container(
-        padding: const EdgeInsets.all(24),
-        child: Row(
-          children: [const Spacer(), LoginPanel()],
-        ),
-      ),
-    );
+    return const Scaffold(
+        backgroundColor: Colors.black54,
+        body: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            LoginPanel(),
+          ],
+        ));
   }
 }
 
-class LoginPanel extends StatelessWidget {
-  LoginPanel({Key? key}) : super(key: key);
-  final LoginController loginController = getIt<LoginController>();
-  @override
-  Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
-    LoginState loginState = context.watch<LoginState>();
-    double width = Get.width;
-    double height = Get.height;
-    return Container(
-      height: height,
-      width: width*0.2,
+class LoginPanel extends ConsumerWidget {
+  static LoginController myLoginController = getIt<LoginController>();
+  const LoginPanel({super.key});
 
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12)
-      ),
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    ThemeData theme = Theme.of(context);
+    LoginState state = ref.read(loginProvider);
+    return Container(
+      width: 300,
+      height: double.infinity,
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(24),
+          const Text("Please Login"),
+          Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Text("Login",style: theme.textTheme.headline1),
-                const SizedBox(height: 24),
-                CupertinoTextField(
-                  controller: loginState.usernameC,
-                  placeholder: "Username",
+                MyTextField(
+                  label: "Username",
+                  controller: state.usernameC,
+                  validator: (v) {
+                    if (v.isEmpty) {
+                      return null;
+                    } else if (v.length < 4) {
+                      return "Too Short";
+                    } else {
+                      return null;
+                    }
+                  },
                 ),
-                const SizedBox(height: 24),
-                CupertinoTextField(
-                  obscureText: !loginState.showPassword,
-                  controller: loginState.passwordC,
-                  placeholder: "Password",
-                  suffix: IconButton(
-                    icon: Icon(!loginState.showPassword?Ionicons.eye:Ionicons.eye_off),
-                    onPressed: (){
-                      loginState.showPassword = !loginState.showPassword;
-                      loginState.setState();
-                    },
-                  ),
-                ),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: Get.width,
-                  height: 40,
-                  child: ArtemisButton(
-
-                    backgroundColor: theme.primaryColor,
-                    color: Colors.white,
-                    label: "Login",
-                    isLoading: loginState.loginLoading,
-                    onPressed: (){
-                      loginController.login(username: loginState.usernameC.text, password: loginState.passwordC.text);
-                    },
-                  ),
+                const SizedBox(height: 12),
+                MyTextField(label: "Password", controller: state.passwordC),
+                const SizedBox(height: 12),
+                Consumer(
+                  builder: (BuildContext context, WidgetRef ref, Widget? child) {
+                    LoginState state = ref.watch(loginProvider);
+                    return MyButton(
+                      onPressed: () async {
+                        await Future.delayed(const Duration(seconds: 2));
+                      },
+                      label: 'login',
+                    );
+                  },
                 ),
               ],
             ),
-          ),
-
+          )
         ],
       ),
     );

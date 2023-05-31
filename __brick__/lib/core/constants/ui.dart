@@ -4,9 +4,10 @@ import 'package:flutter/services.dart';
 class MyColors {
   MyColors._();
 
-  static const mainColor = Color(0xff133159);
+  static const mainColor = Color(0xff4c6ef6);
   static const darkSlateBlue = Color(0xff133159);
   static const slateBlue = Color(0xff5f7b98);
+  static const greyBG = Color(0xffeaeaea);
   static const white1 = Color.fromRGBO(245, 245, 245, 1);
   static const white2 = Color.fromRGBO(250, 250, 250, 1);
   static const white3 = Color.fromRGBO(255, 255, 255, 1);
@@ -19,6 +20,7 @@ class MyColors {
   static const black7 = Color.fromRGBO(0, 0, 0, 0.07);
   static const black8 = Color.fromRGBO(0, 0, 0, 0.08);
   static const blueGreen = Color.fromRGBO(20, 122, 137, 1);
+  static const printBlue = Colors.blueAccent;
   static const adobe = Color.fromRGBO(186, 112, 72, 1);
   static const oliveDrab = Color.fromRGBO(111, 108, 46, 1);
   static const paleGrey2 = Color.fromRGBO(247, 248, 255, 1);
@@ -45,6 +47,7 @@ class MyColors {
   static const brownGrey7 = Color.fromRGBO(175, 175, 175, 1);
   static const pinkishGrey = Color.fromRGBO(206, 206, 206, 1);
   static const paleGreyThree = Color.fromRGBO(241, 244, 255, 1);
+  static const veryLightRed = Color(0xfffff2f2);
   static const veryLightPink = Color.fromRGBO(237, 237, 237, 1);
   static const veryLightPink2 = Color.fromRGBO(234, 234, 234, 1);
   static const veryLightPink3 = Color.fromRGBO(235, 235, 235, 1);
@@ -54,22 +57,30 @@ class MyColors {
   static const veryLightPink7 = Color.fromRGBO(255, 238, 237, 1);
   static const greenishTeal = Color.fromRGBO(46, 198, 157, 1);
   static const green = Color.fromRGBO(106, 240, 29, 1);
+  static const macAndCheese = Color.fromRGBO(239, 176, 75, 1);
   static const oceanGreen = Color.fromRGBO(48, 141, 117, 1);
   static const butterscotch = Color.fromRGBO(239, 176, 75, 1);
   static const turquoise = Color.fromRGBO(10, 195, 159, 1);
   static const grapefruit = Color.fromRGBO(255, 93, 93, 1);
   static const red = Color.fromRGBO(238, 91, 92, 1);
+  static const shinyRed = Color(0xffff0647);
   static const lineColor = Color(0xffE1E1E1);
+  static const fadedBlue = Color(0xff7c8ac9);
+  static const duskBlue = Color(0xff293a84);
+  static const lightPeriwinkle = Color(0xffbdcaff);
   static const ice = Color.fromRGBO(218, 250, 246, 1);
   static const iceBlue = Color.fromRGBO(248, 255, 253, 1);
   static const havaPrime = Color.fromRGBO(229, 20, 100, 1);
   static const havaAccent = Color.fromRGBO(102, 196, 189, 1);
   static const warmGrey = Color.fromRGBO(131, 131, 131, 1);
   static const adl = Color.fromRGBO(77, 111, 255, 1);
-  static const chd = Color.fromRGBO(222, 125, 13, 1);
-  static const inf = Color.fromRGBO(230, 50, 133, 1);
+  static const inf = Color.fromRGBO(222, 125, 13, 1);
+  static const chd = Color.fromRGBO(230, 50, 133, 1);
   static const autoSeat = Color.fromRGBO(252, 90, 15, 1);
   static const manualSeat = Color.fromRGBO(25, 163, 7, 1);
+  static const checkinGreen = Color.fromRGBO(72, 192, 162, 1);
+  static const boardingBlue = Color.fromRGBO(77, 111, 255, 1);
+  static const reserveGreen = Color.fromRGBO(176, 255, 223, 1);
 
   static const materialColor = {
     50: Color.fromRGBO(77, 111, 255, .1),

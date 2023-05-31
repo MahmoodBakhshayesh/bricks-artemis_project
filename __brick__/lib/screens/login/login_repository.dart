@@ -1,41 +1,49 @@
 import 'dart:developer';
+import 'package:brs_panel/initialize.dart';
 import 'package:dartz/dartz.dart';
-import '../../core/classes/settings_class.dart';
-import '../../core/error/exception.dart';
-import '../../core/error/failures.dart';
+import '../../core/abstracts/exception_abs.dart';
+import '../../core/abstracts/failures_abs.dart';
 import '../../core/platform/network_info.dart';
-import '../../screens/login/interfaces/login_repository_interface.dart';
-import '../../core/classes/user_class.dart';
+import 'interfaces/login_repository_interface.dart';
 import 'data_sources/login_local_ds.dart';
 import 'data_sources/login_remote_ds.dart';
 import 'usecases/login_usecase.dart';
+import 'usecases/server_select_usecase.dart';
 
 class LoginRepository implements LoginRepositoryInterface {
-  final LoginRemoteDataSource loginRemoteDataSource;
-  final LoginLocalDataSource loginLocalDataSource;
-  final NetworkInfo networkInfo;
+  final LoginRemoteDataSource loginRemoteDataSource = LoginRemoteDataSource();
+  final LoginLocalDataSource loginLocalDataSource = LoginLocalDataSource();
+  final NetworkInfo networkInfo = getIt<NetworkInfo>();
 
-  LoginRepository({required this.loginRemoteDataSource, required this.loginLocalDataSource, required this.networkInfo});
+  LoginRepository();
 
   @override
-  Future<Either<Failure, User>> login(LoginRequest loginRequest) async {
-    if (await networkInfo.isConnected) {
-      try {
-        User user = await loginRemoteDataSource.login(loginRequest: loginRequest);
-        return Right(user);
-      }  on AppException catch (e){
-        return Left(ServerFailure.fromAppException(e));
+  Future<Either<Failure, LoginResponse>> login(LoginRequest request) async {
+    try {
+      LoginResponse loginResponse;
+      if (await networkInfo.isConnected) {
+        loginResponse = await loginRemoteDataSource.login(request: request);
+      } else {
+        loginResponse = await loginLocalDataSource.login(request: request);
       }
-    } else {
-      try {
-        User user = await loginLocalDataSource.login(loginRequest:loginRequest);
-        return Right(user);
-      } on AppException catch (e){
-        return Left(CacheFailure.fromAppException(e));
-      }
+      return Right(loginResponse);
+    } on AppException catch (e) {
+      return Left(ServerFailure.fromAppException(e));
     }
   }
 
-
-
+  @override
+  Future<Either<Failure, ServerSelectResponse>> serverSelect(ServerSelectRequest request) async {
+    try {
+      ServerSelectResponse serverSelectResponse;
+      if (await networkInfo.isConnected) {
+        serverSelectResponse = await loginRemoteDataSource.serverSelect(request: request);
+      } else {
+        serverSelectResponse = await loginLocalDataSource.serverSelect(request: request);
+      }
+      return Right(serverSelectResponse);
+    } on AppException catch (e) {
+      return Left(ServerFailure.fromAppException(e));
+    }
+  }
 }

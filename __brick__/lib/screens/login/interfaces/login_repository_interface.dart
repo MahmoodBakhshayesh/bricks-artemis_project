@@ -1,8 +1,9 @@
 import 'package:dartz/dartz.dart';
-import '../../../core/classes/user_class.dart';
-import '../../../core/error/failures.dart';
+import '../../../core/abstracts/failures_abs.dart';
 import '../usecases/login_usecase.dart';
+import '../usecases/server_select_usecase.dart';
 
 abstract class LoginRepositoryInterface {
-  Future<Either<Failure, User>> login(LoginRequest request);
+  Future<Either<Failure, LoginResponse>> login(LoginRequest request);
+  Future<Either<Failure, ServerSelectResponse>> serverSelect(ServerSelectRequest request);
 }
