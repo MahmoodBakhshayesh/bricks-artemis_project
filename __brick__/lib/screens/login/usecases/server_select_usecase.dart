@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import '../../../core/abstracts/failures_abs.dart';
-import '../../../core/abstracts/request_abs.dart';
-import '../../../core/abstracts/response_abs.dart';
-import '../../../core/abstracts/usecase_abs.dart';
+import '../../../core/interface_implementations/response_imp.dart';
+import '../../../core/interfaces/request_int.dart';
 import '../../../core/classes/server_class.dart';
+import '../../../core/interfaces/failures_int.dart';
+import '../../../core/interfaces/usecase_int.dart';
 import '../login_repository.dart';
 
 class ServerSelectUseCase extends UseCase<ServerSelectResponse, ServerSelectRequest> {
@@ -17,7 +17,7 @@ class ServerSelectUseCase extends UseCase<ServerSelectResponse, ServerSelectRequ
   }
 }
 
-class ServerSelectRequest extends Request {
+class ServerSelectRequest extends RequestInterface {
   ServerSelectRequest();
 
   @override
@@ -34,12 +34,12 @@ class ServerSelectRequest extends Request {
   }
 }
 
-class ServerSelectResponse extends Response {
+class ServerSelectResponse extends ResponseImplementation {
   final List<Server> servers;
 
   ServerSelectResponse({required int status, required String message, required this.servers}) : super(status: status, message: message, body: {"ServerList": servers.map((e) => e.toJson()).toList()});
 
-  factory ServerSelectResponse.fromResponse(Response res) => ServerSelectResponse(
+  factory ServerSelectResponse.fromResponse(ResponseImplementation res) => ServerSelectResponse(
         status: res.status,
         message: res.message,
         servers: List<Server>.from(res.body["ServerList"].map((x) => Server.fromJson(x))),

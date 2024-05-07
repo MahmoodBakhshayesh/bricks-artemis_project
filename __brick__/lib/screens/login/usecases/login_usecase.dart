@@ -1,11 +1,11 @@
-import 'package:brs_panel/core/util/app_config.dart';
+import '../../../core/interface_implementations/response_imp.dart';
+import '../../../core/interfaces/request_int.dart';
+import '../../../core/interfaces/device_info_service_int.dart';
+import '../../../core/interfaces/failures_int.dart';
+import '../../../core/interfaces/usecase_int.dart';
 import 'package:dartz/dartz.dart';
-import '../../../core/abstracts/device_info_service_abs.dart';
-import '../../../core/abstracts/failures_abs.dart';
-import '../../../core/abstracts/request_abs.dart';
-import '../../../core/abstracts/response_abs.dart';
-import '../../../core/abstracts/usecase_abs.dart';
 import '../../../core/classes/user_class.dart';
+import '../../../core/utils_and_services/app_config.dart';
 import '../login_repository.dart';
 
 class LoginUseCase extends UseCase<LoginResponse, LoginRequest> {
@@ -19,7 +19,7 @@ class LoginUseCase extends UseCase<LoginResponse, LoginRequest> {
   }
 }
 
-class LoginRequest extends Request {
+class LoginRequest extends RequestInterface {
   final String username;
   final String password;
   final String al;
@@ -68,7 +68,7 @@ class LoginRequest extends Request {
   }
 }
 
-class LoginResponse extends Response {
+class LoginResponse extends ResponseImplementation {
   final User user;
 
   LoginResponse({required int status, required String message, required this.user})
@@ -80,7 +80,7 @@ class LoginResponse extends Response {
           },
         );
 
-  factory LoginResponse.fromResponse(Response res) => LoginResponse(
+  factory LoginResponse.fromResponse(ResponseImplementation res) => LoginResponse(
         status: res.status,
         message: res.message,
         user: User.fromJson(res.body["User"]),

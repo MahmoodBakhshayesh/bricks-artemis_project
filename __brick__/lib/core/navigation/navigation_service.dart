@@ -1,24 +1,24 @@
 import 'dart:developer';
+import '../../../core/interfaces/controller_int.dart';
+import '../../../core/interfaces/navigation_int.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../abstracts/controller_abs.dart';
-import '../abstracts/navigation_abs.dart';
 import 'route_names.dart';
 import 'router.dart';
 
-class NavigationService extends BasicNavigationService {
+class NavigationService extends NavigationInterface {
   final List<int> _openedDialogs = [];
 
   BuildContext get context => rootRouterKey.currentState!.context;
 
   bool get isDialogOpened => _openedDialogs.isEmpty;
-  final Map<RouteNames, MainController> _registeredControllers = {};
+  final Map<RouteNames, ControllerInterface> _registeredControllers = {};
 
-  void registerController(RouteNames route, MainController controller) {
+  void registerController(RouteNames route, ControllerInterface controller) {
     _registeredControllers.putIfAbsent(route, () => controller);
   }
 
-  void registerControllers(Map<RouteNames, MainController> map) {
+  void registerControllers(Map<RouteNames, ControllerInterface> map) {
     _registeredControllers.addAll(map);
   }
 
@@ -103,6 +103,24 @@ class NavigationService extends BasicNavigationService {
       useRootNavigator: false,
       builder: (context) => content,
     ).then((value) {
+      log("Dialog Then $value");
+      _openedDialogs.removeLast();
+      res = value;
+      return value;
+    });
+    return res;
+  }
+
+  @override
+  Future bottomSheet(Widget content) async {
+    _openedDialogs.add(_openedDialogs.length);
+    late dynamic res;
+    await showModalBottomSheet(
+        useRootNavigator: true,
+        context: context,
+        builder: (BuildContext context) {
+          return content;
+        }).then((value) {
       log("Dialog Then $value");
       _openedDialogs.removeLast();
       res = value;

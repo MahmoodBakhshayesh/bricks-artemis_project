@@ -1,4 +1,4 @@
-import 'package:brs_panel/initialize.dart';
+import '../../initialize.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 

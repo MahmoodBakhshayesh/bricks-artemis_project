@@ -11,6 +11,8 @@ class LoginState extends ChangeNotifier {
   User? admin;
   TextEditingController usernameC= TextEditingController();
   TextEditingController passwordC= TextEditingController();
+  FocusNode usernameFN= FocusNode();
+  FocusNode passwordFN= FocusNode();
   TextEditingController alC= TextEditingController();
 
   bool loadingLogin = false;

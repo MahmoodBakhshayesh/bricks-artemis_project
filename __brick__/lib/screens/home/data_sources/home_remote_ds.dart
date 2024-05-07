@@ -1,5 +1,4 @@
-import '../../../core/abstracts/response_abs.dart';
-import '../../../core/platform/network_manager.dart';
+import '../../../core/interface_implementations/network_manager.dart';
 import '../interfaces/home_data_source_interface.dart';
 import 'home_local_ds.dart';
 

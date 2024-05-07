@@ -3,6 +3,7 @@ import '../core/constants/ui.dart';
 
 class MySegment<T> extends StatelessWidget {
   final List<T> items;
+  final Map<int,T>? itemsMap;
   final void Function(T) onChange;
   final String Function(T)? itemToString;
   final Widget Function(T)? itemToWidget;
@@ -16,6 +17,7 @@ class MySegment<T> extends StatelessWidget {
     required this.onChange,
     required this.value,
     this.itemToString,
+    this.itemsMap,
     this.itemToWidget,
     this.height,
     this.selectionColor,
@@ -30,23 +32,26 @@ class MySegment<T> extends StatelessWidget {
         child: Row(
           children: items
               .map((e) => Expanded(
-                  child: TextButton(
-                      style: TextButton.styleFrom(
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.zero,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4),
-                          ),
-                          foregroundColor: e == value ? Colors.white : MyColors.black3,
-                          backgroundColor: e == value ? selectionColor ?? MyColors.lightIshBlue : Colors.transparent),
-                      onPressed: () {
-                        onChange(e);
-                      },
-                      child: itemToWidget?.call(e) ??
-                          Text(
-                            itemToString == null ? e.toString() : itemToString!(e),
-                            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
-                          ))))
+                  child: SizedBox(
+                    height: (height ?? 32)-8,
+                    child: TextButton(
+                        style: TextButton.styleFrom(
+                            alignment: Alignment.center,
+                            padding: EdgeInsets.zero,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            foregroundColor: e == value ? Colors.white : MyColors.black3,
+                            backgroundColor: e == value ? selectionColor ?? MyColors.lightIshBlue : Colors.transparent),
+                        onPressed: () {
+                          onChange(e);
+                        },
+                        child: itemToWidget?.call(e) ??
+                            Text(
+                              itemToString == null ? e.toString() : itemToString!(e),
+                              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 13),
+                            )),
+                  )))
               .toList(),
         ));
   }

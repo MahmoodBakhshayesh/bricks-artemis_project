@@ -31,7 +31,7 @@ class MyTimeField extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          margin: const EdgeInsets.only(top: 15),
+          // margin: const EdgeInsets.only(top: 15),
           decoration: BoxDecoration(
               color: backgroundColor,
               borderRadius: BorderRadius.circular(5),
@@ -61,24 +61,24 @@ class MyTimeField extends StatelessWidget {
             ),
           ),
         ),
-        Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: backgroundColor,
-            ),
-            height: 30*ratio,
-            width: 30*ratio,
-            padding: const EdgeInsets.all(4),
-            child:  SizedBox(
-                child: Icon(locked? Icons.lock:
-                  Ionicons.time,
-                  size: 20,
-                  color:locked?Colors.black: MyColors.veryLightPink,
-                )),
-          ),
-        )
+        // Align(
+        //   alignment: Alignment.topCenter,
+        //   child: Container(
+        //     decoration: BoxDecoration(
+        //       shape: BoxShape.circle,
+        //       color: backgroundColor,
+        //     ),
+        //     height: 30*ratio,
+        //     width: 30*ratio,
+        //     padding: const EdgeInsets.all(4),
+        //     child:  SizedBox(
+        //         child: Icon(locked? Icons.lock:
+        //           Ionicons.time,
+        //           size: 20,
+        //           color:locked?Colors.black: MyColors.veryLightPink,
+        //         )),
+        //   ),
+        // )
       ],
     );
   }

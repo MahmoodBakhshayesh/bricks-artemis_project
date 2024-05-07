@@ -1,8 +1,6 @@
 import 'dart:developer';
 import 'package:dartz/dartz.dart';
-import '../../core/abstracts/exception_abs.dart';
-import '../../core/abstracts/failures_abs.dart';
-import '../../core/platform/network_info.dart';
+import '../../core/interface_implementations/network_info.dart';
 import '../../initialize.dart';
 import 'interfaces/home_repository_interface.dart';
 import 'data_sources/home_local_ds.dart';

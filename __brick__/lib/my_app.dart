@@ -22,7 +22,7 @@ class _MyAppState extends ConsumerState<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final router = ref.watch(routerProvider);
+    // final router = ref.watch(routerProvider);
     return MaterialApp.router(
       builder: BotToastInit(),
       debugShowCheckedModeBanner: false,

@@ -3,48 +3,47 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:artemis_utils/artemis_utils.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import '../../core/interfaces/network_info_int.dart';
+import '../../core/utils_and_services/app_config.dart';
+import '../../core/utils_and_services/app_data.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:network_manager/network_manager.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'core/classes/config_class.dart';
 import 'core/data_base/classes/db_user_class.dart';
 import 'core/data_base/local_data_base.dart';
+import 'core/interface_implementations/device_info.dart';
+import 'core/interface_implementations/network_info.dart';
+import 'core/interface_implementations/parser_imp.dart';
+import 'core/interface_implementations/shared_preferences_imp.dart';
+import 'core/interfaces/navigation_int.dart';
+import 'core/interfaces/parser_int.dart';
+import 'core/interfaces/shared_preferences_int.dart';
 import 'core/navigation/navigation_service.dart';
 import 'core/navigation/route_names.dart';
-import 'core/platform/device_info.dart';
-import 'core/platform/network_info.dart';
-import 'core/util/basic_class.dart';
-import 'core/util/config_class.dart';
 import 'screens/home/home_controller.dart';
 import 'screens/login/login_controller.dart';
+
 
 final getIt = GetIt.instance;
 
 Future<void> init() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await initDataBase();
-  await loadConfigFile();
 
   getIt.allowReassignment = true;
 
-  Connectivity connectivity = Connectivity();
-  NetworkInfo networkInfo = NetworkInfo(connectivity);
-  getIt.registerSingleton(networkInfo);
+  WidgetsFlutterBinding.ensureInitialized();
+  NavigationInterface ns = NavigationService();
+  SharedPreferencesInterface sp = SharedPreferencesImp();
+  getIt.registerFactory(() => ns);
+  getIt.registerFactory(() => sp);
 
-  NavigationService navigationService = NavigationService();
-  getIt.registerSingleton(navigationService);
+  await _initDataBase();
+  await _initConfig();
+  await _initPackages();
 
-  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  getIt.registerSingleton(sharedPreferences);
-
-  LocalDataBase localDataBase = LocalDataBase();
-  getIt.registerSingleton(localDataBase);
-
-  MyDeviceInfo deviceInfo = await DeviceUtility.getInfo();
-  DeviceInfoService deviceInfoService = DeviceInfoService(deviceInfo);
-  getIt.registerSingleton(deviceInfoService);
 }
 
 initControllers() {
@@ -64,12 +63,12 @@ initControllers() {
 void initFullScreen() async {}
 
 initNetworkManager([String? baseUrl]) {
-  String base = baseUrl ?? BasicClass.config.baseURL;
+  String base = baseUrl ?? AppData.config.baseURL;
   // log("Setting Base URL to $baseUrl");
   NetworkOption.initialize(
-      timeout: 100000000000,
+      timeout: const Duration(milliseconds: 30000),
       baseUrl: base,
-      extraSuccessRule: (NetworkResponse nr) {
+      extraSuccessRule: (NetworkResponse nr,NetworkRequest req) {
         if (nr.responseCode != 200) return false;
         int statusCode = int.parse((nr.responseBody["Status"]?.toString() ?? nr.responseBody["ResultCode"]?.toString() ?? "0"));
         print("Success Check => ${statusCode}");
@@ -85,47 +84,68 @@ initNetworkManager([String? baseUrl]) {
       errorMsgExtractor: (data) {
         return (data["Message"] ?? data["ResultText"] ?? "Unknown Error").toString();
       },
-      tokenExpireRule: (NetworkResponse res) {
+      tokenExpireRule: (NetworkResponse res,NetworkRequest req) {
         if (res.responseBody is Map && res.responseBody["Body"] != null) {
           return res.extractedMessage?.contains("Token Expired") ?? false;
         } else {
           return false;
         }
       },
-      onTokenExpire: (NetworkResponse res) {
+      onTokenExpire: (NetworkResponse res,NetworkRequest req) {
         HomeController homeController = getIt<HomeController>();
         homeController.logout();
       });
 }
 
 
-Future<void> loadConfigFile() async {
+Future<void> _initConfig() async {
   String? directory = (await getApplicationDocumentsDirectory()).path;
   final File file = File('$directory/config/config.json');
   if (file.existsSync()) {
     final jsonStr = file.readAsStringSync();
     try {
       Config config = Config.fromJson(jsonDecode(jsonStr));
-      BasicClass.setConfig(config);
+      AppData.setConfig(config);
       initNetworkManager(config.baseURL);
       log("Config read from config.json");
     } catch (e) {
       await file.create(recursive: true);
       file.writeAsStringSync(json.encode(Config.def().toJson()), mode: FileMode.write);
-      BasicClass.setConfig(Config.def());
+      AppData.setConfig(Config.def());
       initNetworkManager(Config.def().baseURL);
       log("Config read from config.default with exception $e");
     }
   } else {
     await file.create(recursive: true);
     file.writeAsStringSync(json.encode(Config.def().toJson()));
-    BasicClass.setConfig(Config.def());
+    AppData.setConfig(Config.def());
     initNetworkManager(Config.def().baseURL);
     log("Config read from config.default");
   }
 }
 
-Future<void> initDataBase() async {
-  await Hive.initFlutter();
-  Hive.registerAdapter(UserDBAdapter());
+Future<void> _initDataBase() async {
+
+}
+
+Future<void> _initPackages() async {
+  Connectivity connectivity = Connectivity();
+  NetworkInfoInterface networkInfo = NetworkInfo(connectivity);
+  getIt.registerSingleton(networkInfo);
+
+  NavigationService navigationService = NavigationService();
+  getIt.registerSingleton(navigationService);
+
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  getIt.registerSingleton(sharedPreferences);
+
+  LocalDataBase localDataBase = LocalDataBase();
+  getIt.registerSingleton(localDataBase);
+
+  MyDeviceInfo deviceInfo = await DeviceUtility.getInfo();
+  DeviceInfoService deviceInfoService = DeviceInfoService(deviceInfo);
+  getIt.registerSingleton(deviceInfoService);
+
+  ParserInterface parser = Parser();
+  getIt.registerSingleton(parser);
 }

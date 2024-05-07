@@ -1,6 +1,5 @@
-import 'package:brs_panel/initialize.dart';
+import '../../initialize.dart';
 import 'package:flutter/material.dart';
-import '../../core/util/basic_class.dart';
 import 'home_controller.dart';
 import 'home_state.dart';
 

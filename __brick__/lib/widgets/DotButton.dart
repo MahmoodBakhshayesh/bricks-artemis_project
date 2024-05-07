@@ -31,7 +31,7 @@ class DotButton extends StatefulWidget {
       this.statesController,
       this.child,
       required this.icon,
-      this.showLoading = false,
+      this.showLoading = true,
       this.fade = true,
       this.color});
 
@@ -56,7 +56,7 @@ class _DotButtonState extends State<DotButton> {
   }
   @override
   Widget build(BuildContext context) {
-    Color c = widget.color ?? Colors.blueAccent;
+    Color c = widget.onPressed==null?Colors.grey: widget.color ?? Colors.blueAccent;
     return SizedBox(
       width: widget.size,
       height: widget.size,
@@ -69,6 +69,7 @@ class _DotButtonState extends State<DotButton> {
         statesController: widget.statesController,
         onHover: widget.onHover,
         style: ButtonStyle(
+          shape: MaterialStatePropertyAll(RoundedRectangleBorder(borderRadius: BorderRadius.circular(5))),
           fixedSize: MaterialStatePropertyAll(Size(widget.size,widget.size)),
           padding: const MaterialStatePropertyAll(EdgeInsets.zero),
           shadowColor: const MaterialStatePropertyAll(Colors.transparent),
@@ -78,9 +79,9 @@ class _DotButtonState extends State<DotButton> {
         child: _loading && widget.showLoading
             ? SpinKitCircle(
                 color: widget.fade ? c : Colors.white,
-                size: 20,
+                size: widget.size-8,
               )
-            : widget.child ?? Icon(widget.icon),
+            : widget.child ?? Icon(widget.icon,size: widget.size-8,),
       ),
     );
   }

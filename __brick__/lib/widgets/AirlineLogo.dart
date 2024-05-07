@@ -1,11 +1,12 @@
 import 'dart:convert';
+import '../../core/interface_implementations/response_imp.dart';
+import '../../core/interfaces/network_manager_int.dart';
+import '../../initialize.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import '../core/abstracts/response_abs.dart';
 import '../core/constants/apis.dart';
 import '../core/data_base/local_data_base.dart';
 import '../core/data_base/table_names.dart';
-import '../core/platform/network_manager.dart';
 
 class AirlineLogo extends StatefulWidget {
   final double size;
@@ -39,8 +40,8 @@ class _AirlineLogoState extends State<AirlineLogo> {
   Future<void> getImage(String logo) async {
     String? logoBase64 = await widget.localDataBase.getFromTable<String>(TableNames.logoTable, logo);
     if (logoBase64 == null) {
-      NetworkManager networkManager = NetworkManager();
-      Response response = await networkManager.get(Apis.logoUrl + logo);
+      NetworkManagerInterface networkManager = getIt<NetworkManagerInterface>();
+      ResponseImplementation response = await networkManager.get(Apis.logoUrl + logo);
       if (response.isSuccess) {
         if (response.body is Uint8List && (response.body as Uint8List).isNotEmpty) {
           String base64Logo = base64Encode(response.body);

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/util/basic_class.dart';
 import '../../initialize.dart';
 import 'home_controller.dart';
 import 'home_state.dart';

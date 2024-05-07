@@ -6,6 +6,7 @@ class MyAnimatedSwitcher extends StatelessWidget {
   final Widget secondChild;
   final Axis direction;
   final double axisAlignment;
+  final EdgeInsetsGeometry? padding;
 
   const MyAnimatedSwitcher({
     Key? key,
@@ -14,6 +15,7 @@ class MyAnimatedSwitcher extends StatelessWidget {
     required this.secondChild,
     this.direction = Axis.vertical,
     this.axisAlignment = 1.0,
+    this.padding,
   }) : super(key: key);
 
   @override
@@ -21,7 +23,7 @@ class MyAnimatedSwitcher extends StatelessWidget {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 200),
       transitionBuilder: (child, animation) => SizeTransition(axis: direction, axisAlignment: axisAlignment, sizeFactor: animation, child: child),
-      child: value ? firstChild : secondChild,
+      child: Container(padding: padding,child: value ? firstChild : secondChild,),
     );
   }
 }

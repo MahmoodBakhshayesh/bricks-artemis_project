@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:artemis_ui_kit/artemis_ui_kit.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import '../core/util/pickers.dart';
+import '../core/utils_and_services/pickers.dart';
 import 'DotButton.dart';
 
 class MyFieldPicker<T> extends StatelessWidget {
@@ -77,11 +77,12 @@ class MyFieldPicker<T> extends StatelessWidget {
         child: Stack(
           children: [
             DropdownSearch<T>(
+
               enabled: !locked,
               clearButtonProps: ClearButtonProps(
                 padding: EdgeInsets.zero,
                 isVisible: showClearButton,
-                icon: Icon(locked ? ArtemisIcons.lock : Icons.clear, size: 15),
+                icon: Icon(locked ? Icons.lock : Icons.clear, size: 15),
               ),
               dropdownButtonProps: const DropdownButtonProps(isVisible: false, iconSize: 20),
               dropdownBuilder: (_, item) {
@@ -118,6 +119,8 @@ class MyFieldPicker<T> extends StatelessWidget {
                   labelStyle: TextStyle(fontSize: 12, height: value == null ? 1 : 0.8),
                   labelText: label,
                   hintText: hint,
+                  filled: true,
+                  fillColor: Colors.white,
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 8,
                     vertical: 0,

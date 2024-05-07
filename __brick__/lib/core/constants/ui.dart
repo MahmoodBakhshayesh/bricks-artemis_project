@@ -81,6 +81,9 @@ class MyColors {
   static const checkinGreen = Color.fromRGBO(72, 192, 162, 1);
   static const boardingBlue = Color.fromRGBO(77, 111, 255, 1);
   static const reserveGreen = Color.fromRGBO(176, 255, 223, 1);
+  static const evenRow = Color(0xfff8f8f8);
+  static const oddRow = Color(0xffffffff);
+  static const indexColor = Color(0xff3b3b3b);
 
   static const materialColor = {
     50: Color.fromRGBO(77, 111, 255, .1),
@@ -163,4 +166,14 @@ class MyTheme {
       shape: RoundedRectangleBorder(side: BorderSide(color: MyColors.lineColor)),
     ),
   );
+}
+
+class TextStyles {
+  TextStyles._();
+
+  static const styleBold24Black = TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xff424242));
+  static const styleBold16Grey = TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xff808080));
+  static const styleBold16Black = TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: MyColors.black1);
+  static const style16Grey = TextStyle(fontSize: 16, color: Color(0xff808080), fontWeight: FontWeight.w300);
+  static const tagListHeader = TextStyle(fontWeight: FontWeight.bold, fontSize: 13);
 }

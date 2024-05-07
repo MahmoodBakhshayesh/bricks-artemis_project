@@ -1,15 +1,15 @@
-import '../../core/abstracts/controller_abs.dart';
-import '../../core/abstracts/device_info_service_abs.dart';
 import '../../core/classes/new_version_class.dart';
 import '../../core/classes/user_class.dart';
+import '../../core/interface_implementations/device_info.dart';
+import '../../core/interfaces/controller_int.dart';
+import '../../core/interfaces/device_info_service_int.dart';
 import '../../core/navigation/route_names.dart';
-import '../../core/platform/device_info.dart';
-import '../../core/util/handlers/failure_handler.dart';
+import '../../core/utils_and_services/handlers/failure_handler.dart';
 import '../../initialize.dart';
 import 'login_state.dart';
 import 'usecases/login_usecase.dart';
 
-class LoginController extends MainController {
+class LoginController extends ControllerInterface {
   late LoginState loginState = ref.read(loginProvider);
 
   Future<User?> login() async {

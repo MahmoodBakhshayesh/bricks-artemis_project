@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import '../../../core/abstracts/failures_abs.dart';
+import '../../../core/interfaces/failures_int.dart';
 import '../usecases/login_usecase.dart';
 import '../usecases/server_select_usecase.dart';
 

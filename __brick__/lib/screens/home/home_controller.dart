@@ -1,10 +1,8 @@
-import '../../core/abstracts/controller_abs.dart';
-import '../../core/util/basic_class.dart';
-import '../../core/util/handlers/failure_handler.dart';
 
+import '../../core/interfaces/controller_int.dart';
 import 'home_state.dart';
 
-class HomeController extends MainController {
+class HomeController extends ControllerInterface {
   late HomeState homeState = ref.read(homeProvider);
 
   void logout() {}

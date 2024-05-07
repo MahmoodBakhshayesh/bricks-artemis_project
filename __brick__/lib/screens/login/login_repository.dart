@@ -1,9 +1,9 @@
 import 'dart:developer';
-import 'package:brs_panel/initialize.dart';
 import 'package:dartz/dartz.dart';
-import '../../core/abstracts/exception_abs.dart';
-import '../../core/abstracts/failures_abs.dart';
-import '../../core/platform/network_info.dart';
+import '../../core/interface_implementations/network_info.dart';
+import '../../core/interfaces/exception_int.dart';
+import '../../core/interfaces/failures_int.dart';
+import '../../initialize.dart';
 import 'interfaces/login_repository_interface.dart';
 import 'data_sources/login_local_ds.dart';
 import 'data_sources/login_remote_ds.dart';
