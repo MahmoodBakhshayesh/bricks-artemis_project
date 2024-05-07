@@ -6,10 +6,10 @@ import '../../initialize.dart';
 import '../interfaces/device_info_service_int.dart';
 import '../navigation/navigation_service.dart';
 
-class DeviceInfoService extends DeviceInfoServiceInterface {
+class DeviceInfoServiceImp extends DeviceInfoServiceInterface {
   final MyDeviceInfo info;
 
-  DeviceInfoService(this.info);
+  DeviceInfoServiceImp(this.info);
 
   @override
   DeviceInfo getInfo() {

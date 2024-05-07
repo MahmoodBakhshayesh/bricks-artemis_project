@@ -1,12 +1,11 @@
-
 import 'dart:developer';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import '../interfaces/network_info_int.dart';
 
-class NetworkInfo implements NetworkInfoInterface {
+class NetworkInfoImp implements NetworkInfoInterface {
   final Connectivity connectivity;
 
-  NetworkInfo(this.connectivity);
+  NetworkInfoImp(this.connectivity);
 
   @override
   Future<bool> get isConnected async {

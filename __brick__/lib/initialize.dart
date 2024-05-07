@@ -8,14 +8,14 @@ import '../../core/utils_and_services/app_config.dart';
 import '../../core/utils_and_services/app_data.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-import 'package:network_manager/network_manager.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'core/classes/config_class.dart';
 import 'core/data_base/classes/db_user_class.dart';
 import 'core/data_base/local_data_base.dart';
-import 'core/interface_implementations/device_info.dart';
-import 'core/interface_implementations/network_info.dart';
+import 'core/interface_implementations/device_info_imp.dart';
+import 'core/interface_implementations/network_info_imp.dart';
+import 'package:network_manager/network_manager.dart';
 import 'core/interface_implementations/parser_imp.dart';
 import 'core/interface_implementations/shared_preferences_imp.dart';
 import 'core/interfaces/navigation_int.dart';
@@ -130,7 +130,7 @@ Future<void> _initDataBase() async {
 
 Future<void> _initPackages() async {
   Connectivity connectivity = Connectivity();
-  NetworkInfoInterface networkInfo = NetworkInfo(connectivity);
+  NetworkInfoImp networkInfo = NetworkInfoImp(connectivity);
   getIt.registerSingleton(networkInfo);
 
   NavigationService navigationService = NavigationService();
@@ -143,7 +143,7 @@ Future<void> _initPackages() async {
   getIt.registerSingleton(localDataBase);
 
   MyDeviceInfo deviceInfo = await DeviceUtility.getInfo();
-  DeviceInfoService deviceInfoService = DeviceInfoService(deviceInfo);
+  DeviceInfoServiceImp deviceInfoService = DeviceInfoServiceImp(deviceInfo);
   getIt.registerSingleton(deviceInfoService);
 
   ParserInterface parser = Parser();

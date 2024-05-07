@@ -1,4 +1,5 @@
 import '../../../core/interface_implementations/response_imp.dart';
+import '../../../core/interface_implementations/network_manager_imp.dart';
 import '../../../initialize.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
@@ -13,7 +14,7 @@ import 'login_local_ds.dart';
 class LoginRemoteDataSource implements LoginDataSourceInterface {
   LoginRemoteDataSource();
 
-  final NetworkManagerInterface networkManager = getIt<NetworkManagerInterface>();
+  final NetworkManagerImp networkManager = getIt<NetworkManagerImp>();
   final ParserInterface parser = getIt<ParserInterface>();
 
 

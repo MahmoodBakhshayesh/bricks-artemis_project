@@ -1,6 +1,7 @@
 import '../../core/classes/new_version_class.dart';
 import '../../core/classes/user_class.dart';
-import '../../core/interface_implementations/device_info.dart';
+import '../../core/interface_implementations/device_info_imp.dart';
+
 import '../../core/interfaces/controller_int.dart';
 import '../../core/interfaces/device_info_service_int.dart';
 import '../../core/navigation/route_names.dart';
@@ -14,7 +15,7 @@ class LoginController extends ControllerInterface {
 
   Future<User?> login() async {
     User? user;
-    DeviceInfoService deviceInfoService = getIt<DeviceInfoService>();
+    DeviceInfoServiceImp deviceInfoService = getIt<DeviceInfoServiceImp>();
     DeviceInfo deviceInfo = deviceInfoService.getInfo();
 
     String username = loginState.usernameC.text;

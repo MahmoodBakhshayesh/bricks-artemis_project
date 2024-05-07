@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:dartz/dartz.dart';
-import '../../core/interface_implementations/network_info.dart';
+import '../../core/interface_implementations/network_info_imp.dart';
 import '../../core/interfaces/exception_int.dart';
 import '../../core/interfaces/failures_int.dart';
 import '../../initialize.dart';
@@ -13,7 +13,7 @@ import 'usecases/server_select_usecase.dart';
 class LoginRepository implements LoginRepositoryInterface {
   final LoginRemoteDataSource loginRemoteDataSource = LoginRemoteDataSource();
   final LoginLocalDataSource loginLocalDataSource = LoginLocalDataSource();
-  final NetworkInfo networkInfo = getIt<NetworkInfo>();
+  final NetworkInfoImp networkInfo = getIt<NetworkInfoImp>();
 
   LoginRepository();
 

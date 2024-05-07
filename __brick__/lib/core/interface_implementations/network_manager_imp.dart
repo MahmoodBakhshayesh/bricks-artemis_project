@@ -1,6 +1,6 @@
+import 'package:network_manager/network_manager.dart';
 import '../../core/interface_implementations/response_imp.dart';
 import 'package:flutter/foundation.dart';
-import 'package:network_manager/network_manager.dart';
 import 'package:dio/dio.dart' as dio;
 import '../interfaces/exception_int.dart';
 import '../interfaces/network_manager_int.dart';
@@ -9,8 +9,8 @@ import '../interfaces/response_int.dart';
 import '../constants/apis.dart';
 import 'exceptions_imp.dart';
 
-class NetworkManager implements NetworkManagerInterface {
-  NetworkManager();
+class NetworkManagerImp implements NetworkManagerInterface {
+  NetworkManagerImp();
 
   @override
   Future<ResponseImplementation> post(RequestInterface request) async {
