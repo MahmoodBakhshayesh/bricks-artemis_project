@@ -147,7 +147,7 @@ class MyFieldPicker<T> extends StatelessWidget {
                     )),
                 emptyBuilder: (c, i) => Container(
                   padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
-                  child: Center(child: Text("No Option", style: theme.textTheme.headline6!.copyWith(color: ArtemisColors.brownGrey))),
+                  child: Center(child: Text("No Option", style: theme.textTheme.bodyMedium!.copyWith(color: ArtemisColors.brownGrey))),
                 ),
                 itemBuilder: (c, item, i) {
                   String main = itemToString(item);

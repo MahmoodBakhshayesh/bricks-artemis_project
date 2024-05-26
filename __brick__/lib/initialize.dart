@@ -63,12 +63,10 @@ initControllers() {
 void initFullScreen() async {}
 
 initNetworkManager([String? baseUrl]) {
-  String base = baseUrl ?? AppData.config.baseURL;
-  // log("Setting Base URL to $baseUrl");
   NetworkOption.initialize(
       timeout: const Duration(milliseconds: 30000),
       baseUrl: base,
-      extraSuccessRule: (NetworkResponse nr,NetworkRequest req) {
+      successCheck: (NetworkRequest req,NetworkResponse nr) {
         if (nr.responseCode != 200) return false;
         int statusCode = int.parse((nr.responseBody["Status"]?.toString() ?? nr.responseBody["ResultCode"]?.toString() ?? "0"));
         print("Success Check => ${statusCode}");
@@ -78,20 +76,17 @@ initNetworkManager([String? baseUrl]) {
         final NavigationService navigationService = getIt<NavigationService>();
         navigationService.hideSnackBars();
       },
-      successMsgExtractor: (data) {
+      msgExtractor: (data) {
         return (data["Message"] ?? data["ResultText"] ?? "Done").toString();
       },
-      errorMsgExtractor: (data) {
-        return (data["Message"] ?? data["ResultText"] ?? "Unknown Error").toString();
-      },
-      tokenExpireRule: (NetworkResponse res,NetworkRequest req) {
+      tokenExpireCheck: (NetworkRequest req,NetworkResponse res) {
         if (res.responseBody is Map && res.responseBody["Body"] != null) {
           return res.extractedMessage?.contains("Token Expired") ?? false;
         } else {
           return false;
         }
       },
-      onTokenExpire: (NetworkResponse res,NetworkRequest req) {
+      onTokenExpire: (NetworkRequest req,NetworkResponse nr) {
         HomeController homeController = getIt<HomeController>();
         homeController.logout();
       });

@@ -16,7 +16,7 @@ class NetworkManagerImp implements NetworkManagerInterface {
   Future<ResponseImplementation> post(RequestInterface request) async {
     NetworkRequest networkRequest = NetworkRequest(api: Apis.baseUrl, data: request.toJson());
     NetworkResponse networkResponse = await networkRequest.post();
-    if (networkResponse.responseStatus) {
+    if (networkResponse.status) {
       try {
         ResponseImplementation res = ResponseImplementation.fromJson(networkResponse.responseBody);
         return res;
