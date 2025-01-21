@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../../initialize.dart';
-import '../../navigation/navigation_service.dart';
-import '../../navigation/route_names.dart';
-import '../../navigation/router.dart';
+
 
 class CallbackShortcuts extends StatelessWidget {
   const CallbackShortcuts({
-    Key? key,
+    super.key,
     required this.bindings,
     required this.child,
-  }) : super(key: key);
+  });
 
   final Map<ShortcutActivator, VoidCallback> bindings;
   final Widget child;
@@ -56,15 +54,8 @@ class LoggingActionDispatcher extends ActionDispatcher {
         BuildContext? context,
       ]) {
     final WidgetRef ref = getIt<WidgetRef>();
-    String route = router.routerDelegate.currentConfiguration.last.route.path;
-    // bool isLogin = MyRouter.currentRouteStack.any((element) => element.title == "Login");
-    RouteNames r = RouteNames.values.firstWhere((element) => element.title == route);
-    NavigationService navigationService = getIt<NavigationService>();
-    // print('Action invoked: $action($intent) from $context');
+
     log('Action invoked: $action($intent) ');
-    // if (action is NextFocusAction) {
-    //   TABAction().invoke(const TABIntent());
-    // }else
     super.invokeAction(action, intent, context);
 
 

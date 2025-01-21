@@ -18,13 +18,13 @@ import 'core/interface_implementations/network_info_imp.dart';
 import 'package:network_manager/network_manager.dart';
 import 'core/interface_implementations/parser_imp.dart';
 import 'core/interface_implementations/shared_preferences_imp.dart';
-import 'core/interfaces/navigation_int.dart';
 import 'core/interfaces/parser_int.dart';
 import 'core/interfaces/shared_preferences_int.dart';
-import 'core/navigation/navigation_service.dart';
-import 'core/navigation/route_names.dart';
+import 'core/navigation/routes.dart';
 import 'screens/home/home_controller.dart';
 import 'screens/login/login_controller.dart';
+import 'core/interface_implementations/network_manager_imp.dart';
+
 
 
 final getIt = GetIt.instance;
@@ -35,9 +35,7 @@ Future<void> init() async {
   getIt.allowReassignment = true;
 
   WidgetsFlutterBinding.ensureInitialized();
-  NavigationInterface ns = NavigationService();
   SharedPreferencesInterface sp = SharedPreferencesImp();
-  getIt.registerFactory(() => ns);
   getIt.registerFactory(() => sp);
 
   await _initDataBase();
@@ -47,34 +45,28 @@ Future<void> init() async {
 }
 
 initControllers() {
-  NavigationService ns = getIt<NavigationService>();
   LoginController loginController = LoginController();
   HomeController homeController = HomeController();
 
   getIt.registerSingleton(loginController);
   getIt.registerSingleton(homeController);
 
-  ns.registerControllers({
-    RouteNames.login: loginController,
-    RouteNames.home: homeController,
-  });
 }
 
 void initFullScreen() async {}
 
 initNetworkManager([String? baseUrl]) {
+  String base = baseUrl ?? AppData.config!.baseUrl;
+  // log("Setting Base URL to $baseUrl");
   NetworkOption.initialize(
       timeout: const Duration(milliseconds: 30000),
       baseUrl: base,
-      successCheck: (NetworkRequest req,NetworkResponse nr) {
-        if (nr.responseCode != 200) return false;
-        int statusCode = int.parse((nr.responseBody["Status"]?.toString() ?? nr.responseBody["ResultCode"]?.toString() ?? "0"));
-        print("Success Check => ${statusCode}");
-        return nr.responseCode == 200 && statusCode > 0;
+      successCheck: (NetworkRequest req,NetworkResponse res) {
+        if (res.responseCode != 200) return false;
+        int statusCode = int.parse((res.responseBody["Status"]?.toString() ?? res.responseBody["ResultCode"]?.toString() ?? "0"));
+        return res.responseCode == 200 && statusCode > 0;
       },
       onStartDefault: (_) {
-        final NavigationService navigationService = getIt<NavigationService>();
-        navigationService.hideSnackBars();
       },
       msgExtractor: (data) {
         return (data["Message"] ?? data["ResultText"] ?? "Done").toString();
@@ -86,7 +78,7 @@ initNetworkManager([String? baseUrl]) {
           return false;
         }
       },
-      onTokenExpire: (NetworkRequest req,NetworkResponse nr) {
+      onTokenExpire: (NetworkRequest req,NetworkResponse res) {
         HomeController homeController = getIt<HomeController>();
         homeController.logout();
       });
@@ -101,20 +93,20 @@ Future<void> _initConfig() async {
     try {
       Config config = Config.fromJson(jsonDecode(jsonStr));
       AppData.setConfig(config);
-      initNetworkManager(config.baseURL);
+      initNetworkManager(config.baseUrl);
       log("Config read from config.json");
     } catch (e) {
       await file.create(recursive: true);
       file.writeAsStringSync(json.encode(Config.def().toJson()), mode: FileMode.write);
       AppData.setConfig(Config.def());
-      initNetworkManager(Config.def().baseURL);
+      initNetworkManager(Config.def().baseUrl);
       log("Config read from config.default with exception $e");
     }
   } else {
     await file.create(recursive: true);
     file.writeAsStringSync(json.encode(Config.def().toJson()));
     AppData.setConfig(Config.def());
-    initNetworkManager(Config.def().baseURL);
+    initNetworkManager(Config.def().baseUrl);
     log("Config read from config.default");
   }
 }
@@ -128,8 +120,10 @@ Future<void> _initPackages() async {
   NetworkInfoImp networkInfo = NetworkInfoImp(connectivity);
   getIt.registerSingleton(networkInfo);
 
-  NavigationService navigationService = NavigationService();
-  getIt.registerSingleton(navigationService);
+  NetworkManagerImp networkManager = NetworkManagerImp();
+  getIt.registerSingleton(networkManager);
+
+
 
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerSingleton(sharedPreferences);

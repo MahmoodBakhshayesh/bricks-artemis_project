@@ -66,6 +66,7 @@ class LoginPanel extends ConsumerWidget {
                     height: 45,
                     onPressed: () async {
                       await Future.delayed(const Duration(seconds: 2));
+                      await myLoginController.login();
                     },
                     fontSize: 16,
                     label: 'Enter',

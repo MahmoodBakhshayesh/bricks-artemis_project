@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tree_navigation/tree_navigation.dart';
 import '../../initialize.dart';
 import '../constants/ui.dart';
-import '../navigation/navigation_service.dart';
 
 class Pickers {
   Pickers._();
@@ -32,13 +33,13 @@ class Pickers {
   }
 
   static Future<T?> pickItem<T>(
-    BuildContext context, {
-    required List<T> items,
-    required String Function(T item) itemToString,
-    required Widget Function(T item) itemBuilder,
-  }) async {
-    NavigationService navigationService = getIt<NavigationService>();
-    T? value = await navigationService.dialog(ListPickerDialog(
+      BuildContext context, {
+        required List<T> items,
+        required String Function(T item) itemToString,
+        required Widget Function(T item) itemBuilder,
+      }) async {
+    final navigationService = GetIt.instance<NavigationInterface>();
+    T? value = await navigationService.openDialog(dialog :ListPickerDialog(
       items: items,
       itemBuilder: itemBuilder,
       itemToString: itemToString,
@@ -80,15 +81,16 @@ class _ListPickerDialogState<T> extends State<ListPickerDialog<T>> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    NavigationService navigationService = getIt<NavigationService>();
-    double width = Get.width;
-    double height = Get.height;
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
+    final navigationService = GetIt.instance<NavigationInterface>();
+
     List<T> items = widget.items
         .where(
           (element) =>
-              // searched.isEmpty ||
-              widget.itemToString(element).toLowerCase().contains(searched.toLowerCase()),
-        )
+      // searched.isEmpty ||
+      widget.itemToString(element).toLowerCase().contains(searched.toLowerCase()),
+    )
         .toList();
     return Dialog(
       insetPadding: const EdgeInsets.symmetric(horizontal: 12),
@@ -105,7 +107,7 @@ class _ListPickerDialogState<T> extends State<ListPickerDialog<T>> {
                 const Spacer(),
                 IconButton(
                     onPressed: () {
-                      navigationService.popDialog();
+                      navigationService.pop();
                     },
                     icon: const Icon(Icons.close))
               ],
@@ -124,18 +126,18 @@ class _ListPickerDialogState<T> extends State<ListPickerDialog<T>> {
               child: ListView.builder(
                   itemCount: items.length,
                   itemBuilder: (c, i) => Material(
-                        color: i.isEven ? MyColors.veryLightPink : Colors.white,
-                        child: InkWell(
-                          onTap: () {
-                            navigationService.popDialog(result: items[i]);
-                            // Navigator.pop(context, items[i]);
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            child: widget.itemBuilder(items[i]),
-                          ),
-                        ),
-                      )),
+                    color: i.isEven ? MyColors.veryLightPink : Colors.white,
+                    child: InkWell(
+                      onTap: () {
+                        navigationService.pop(result: items[i]);
+                        // Navigator.pop(context, items[i]);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        child: widget.itemBuilder(items[i]),
+                      ),
+                    ),
+                  )),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 18, right: 18, bottom: 18),
@@ -144,7 +146,7 @@ class _ListPickerDialogState<T> extends State<ListPickerDialog<T>> {
                   const Spacer(),
                   TextButton(
                     onPressed: () {
-                      navigationService.popDialog();
+                      navigationService.pop();
                     },
                     style: TextButton.styleFrom(foregroundColor: MyColors.greyishBrown, backgroundColor: Colors.white),
                     child: const Text(
@@ -154,7 +156,7 @@ class _ListPickerDialogState<T> extends State<ListPickerDialog<T>> {
                   ),
                   TextButton(
                     onPressed: () {
-                      navigationService.popDialog();
+                      navigationService.pop();
                     },
                     style: TextButton.styleFrom(foregroundColor: Colors.blueAccent, backgroundColor: Colors.white),
                     child: const Text(

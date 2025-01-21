@@ -2,9 +2,10 @@ import 'dart:io';
 import 'package:artemis_utils/artemis_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tree_navigation/tree_navigation.dart';
 import '../../initialize.dart';
 import '../interfaces/device_info_service_int.dart';
-import '../navigation/navigation_service.dart';
 
 class DeviceInfoServiceImp extends DeviceInfoServiceInterface {
   final MyDeviceInfo info;
@@ -13,7 +14,7 @@ class DeviceInfoServiceImp extends DeviceInfoServiceInterface {
 
   @override
   DeviceInfo getInfo() {
-    NavigationService navigationService = getIt<NavigationService>();
+    final navigationService = GetIt.instance<NavigationInterface>();
     BuildContext context = navigationService.context;
     DeviceScreenType screenType = DeviceScreenType.phone;
     if (Platform.isIOS || Platform.isAndroid) {

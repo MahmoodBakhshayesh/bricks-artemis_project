@@ -1,22 +1,21 @@
 import 'package:artemis_ui_kit/artemis_ui_kit.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tree_navigation/tree_navigation.dart';
 import '../../../initialize.dart';
 import '../../interfaces/success_int.dart';
-import '../../navigation/navigation_service.dart';
 
 abstract class SuccessHandler {
-  static final NavigationService navigationService = getIt<NavigationService>();
-
+  static final navigationService = GetIt.instance<NavigationInterface>();
   static get context => navigationService.context;
 
   static void handle2(Success success, {Function? retry}) {
-    navigationService.snackbar(GestureDetector(
+    navigationService.openSnackBar(SnackBar(content: GestureDetector(
         onTap: () {
           // AppB
         },
         child: Text(success.msg)),
-        icon: Icons.check_box,
         backgroundColor: Colors.green,
         duration: const Duration(seconds: 2),
         margin: EdgeInsets.only(
@@ -27,13 +26,7 @@ abstract class SuccessHandler {
               .size
               .width * 0.7,
         )
-      // action: SnackBarAction(
-      //   textColor: Colors.white,
-      //   label: "Done",
-      //   onPressed: () {
-      //   },
-      // ),
-    );
+    ));
   }
 
   static void handle(Success success, {Function? retry}) {
@@ -61,10 +54,9 @@ abstract class SuccessHandler {
 
   static void handleNoElement(String name) {
 
-    navigationService.snackbar(Text("Could not Find $name"),
-      icon: Icons.error,
+    navigationService.openSnackBar(SnackBar(content: Text("Could not Find $name"),
       backgroundColor: Colors.orange,
       duration: const Duration(seconds: 5),
-    );
+    ));
   }
 }

@@ -1,10 +1,9 @@
 import '../../core/classes/new_version_class.dart';
 import '../../core/classes/user_class.dart';
 import '../../core/interface_implementations/device_info_imp.dart';
-
 import '../../core/interfaces/controller_int.dart';
 import '../../core/interfaces/device_info_service_int.dart';
-import '../../core/navigation/route_names.dart';
+import '../../core/navigation/routes.dart';
 import '../../core/utils_and_services/handlers/failure_handler.dart';
 import '../../initialize.dart';
 import 'login_state.dart';
@@ -21,6 +20,11 @@ class LoginController extends ControllerInterface {
     String username = loginState.usernameC.text;
     String password = loginState.passwordC.text;
     String al = loginState.alC.text;
+
+    User fakeUser = User(id: 1, username: username, password: password, token: "token");
+    ref.read(userProvider.notifier).update((s)=>fakeUser);
+    navigation.goNamed(Routes.home);
+    return fakeUser;
 
     LoginUseCase loginUsecase = LoginUseCase();
     LoginRequest loginRequest = LoginRequest(

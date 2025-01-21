@@ -35,16 +35,21 @@ class AppConfig {
 
   AppConfig._internal({this.flavor, this.lightTheme, this.darkTheme, this.baseUrl, this.logoAddress});
 
-  static AppConfig? get instance => _instance;
+  static AppConfig get instance => _instance??AppConfig._internal(
+      flavor: Flavor.abomis,
+      lightTheme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      baseUrl: '',
+      logoAddress: '');
 
-  static ThemeData? get themeLight => _instance!.lightTheme;
+  static ThemeData? get themeLight => instance.lightTheme;
 
-  static ThemeData? get themeDark => _instance!.darkTheme;
+  static ThemeData? get themeDark => instance.darkTheme;
 
-  static String? get baseURL => _instance!.baseUrl;
+  static String? get baseURL => instance.baseUrl;
 
-  static String? get logo => _instance!.logoAddress;
+  static String? get logo => instance.logoAddress;
 
-  static bool get isAbomis => _instance!.flavor == Flavor.abomis;
+  static bool get isAbomis => instance.flavor == Flavor.abomis;
 
 }

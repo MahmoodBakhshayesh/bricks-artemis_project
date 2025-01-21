@@ -1,29 +1,38 @@
 class Config {
+  final String baseUrl;
+  final String theme;
+  final String company;
+
   Config({
-    required this.appName,
+    required this.baseUrl,
+    required this.theme,
     required this.company,
-    required this.baseURL,
   });
 
-  final String appName;
-  final String company;
-  final String baseURL;
+  Config copyWith({
+    String? baseUrl,
+    String? theme,
+    String? company,
+  }) =>
+      Config(
+        baseUrl: baseUrl ?? this.baseUrl,
+        theme: theme ?? this.theme,
+        company: company ?? this.company,
+      );
 
   factory Config.fromJson(Map<String, dynamic> json) => Config(
-    appName: json["AppName"],
+    baseUrl: json["BaseUrl"],
+    theme: json["Theme"],
     company: json["Company"],
-    baseURL: json["BaseURL"],
   );
 
-  factory Config.def() => Config(
-    appName: 'DCS',
-    company: 'Abomis',
-    baseURL: 'https://devdatabridge-dcs7.fdcs.ir/dcs',
-  );
+  factory Config.def() {
+    return Config(baseUrl: 'https://databridgecmprs.fdcs.ir', theme: 'dark', company: 'Abomis');
+  }
 
   Map<String, dynamic> toJson() => {
-    "AppName": appName,
+    "BaseUrl": baseUrl,
+    "Theme": theme,
     "Company": company,
-    "BaseURL": baseURL,
   };
 }

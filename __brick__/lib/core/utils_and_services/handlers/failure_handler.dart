@@ -2,15 +2,15 @@ import 'dart:developer';
 import 'package:artemis_ui_kit/artemis_ui_kit.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:tree_navigation/tree_navigation.dart';
 import '../../../initialize.dart';
 import '../../interfaces/failures_int.dart';
-import '../../navigation/navigation_service.dart';
 
 abstract class FailureHandler {
-  static final NavigationService navigationService = getIt<NavigationService>();
+  static final navigationService = GetIt.instance<NavigationInterface>();
   static get context => navigationService.context;
 
-  // FailureHandler._();
 
   static void handle(Failure failure, {Function? retry}) {
     BotToast.showAttachedWidget(
@@ -59,18 +59,16 @@ abstract class FailureHandler {
 
   static void handle2(Failure failure, {Function? retry}) {
     if (failure is ValidationFailure) {
-      navigationService.snackbar(GestureDetector(onTap: () {}, child: Text("$failure")),
+      navigationService.openSnackBar(SnackBar(content:  GestureDetector(onTap: () {}, child: Text("$failure")),
           margin: EdgeInsets.only(
             left: 12,
             bottom: 12,
             right: MediaQuery.of(navigationService.context).size.width * 0.5,
           ),
-          icon: Icons.warning,
           backgroundColor: Colors.orangeAccent,
-          duration: const Duration(seconds: 2));
+          duration: const Duration(seconds: 2)));
     } else {
-      navigationService.snackbar(GestureDetector(onTap: () {}, child: Text("$failure")),
-          icon: Icons.error,
+      navigationService.openSnackBar(SnackBar(content:GestureDetector(onTap: () {}, child: Text("$failure")),
           backgroundColor: Colors.red,
           duration: const Duration(seconds: 10),
           margin: EdgeInsets.only(
@@ -85,16 +83,15 @@ abstract class FailureHandler {
               log("Retry");
               retry?.call();
             },
-          ));
+          )));
     }
   }
 
   static void handleNoElement(String name) {
-    navigationService.snackbar(
-      Text("Could not Find $name"),
-      icon: Icons.error,
+    navigationService.openSnackBar(
+      SnackBar(content: Text("Could not Find $name"),
       backgroundColor: Colors.orange,
       duration: const Duration(seconds: 5),
-    );
+    ));
   }
 }

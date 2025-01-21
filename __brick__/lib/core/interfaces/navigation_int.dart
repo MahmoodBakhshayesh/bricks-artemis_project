@@ -1,121 +1,301 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import '../navigation/route_names.dart';
+import '../navigation/router.dart';
+import '../navigation/routes.dart';
+import 'controller_int.dart';
+
+const String popUpNameAndKeySeparator = '@';
 
 abstract class NavigationInterface {
-  /// Get a location from route name and parameters.
-  String namedLocation(
-    RouteNames route, {
-    Map<String, String> pathParameters = const <String, String>{},
-    Map<String, dynamic> queryParameters = const <String, dynamic>{},
-  });
+  List<String> openedDialogOrBottomSheetList = [];
+  List<String> openedDialogList = [];
+  List<String> openedBottomSheetList = [];
+  Map<RouteName, ControllerInterface> registeredControllers = {};
+  List<RouteName> stack = [];
+  Function? pendingRouteFunction;
+  RouteName? previousRoute;
 
-  /// Navigate to a location.
-  void go(String location, {Object? extra});
+  RouteName? get currentRoute => RouteProvider.of(context);
 
-  /// Navigate to a named route.
+  set _currentRoute(RouteName? newRoute) {
+    RouteProvider.updateRoute(context: context, routeName: newRoute);
+  }
+
+  void registerAllControllers(Map<RouteName, ControllerInterface> routeToController) {
+    registeredControllers = routeToController;
+  }
+
+  void initializeRoute(RouteName routeName, {bool addToStack = true}) {
+    registeredControllers[routeName]?.onInit();
+    if (addToStack) {
+      stack.add(routeName);
+    }
+    _currentRoute = routeName;
+  }
+
+  void disposeRoute({required RouteName? previousRoute, required RouteName poppedRoute, bool updateStack = true}) {
+    registeredControllers[poppedRoute]?.onDispose();
+    if (updateStack && stack.isNotEmpty) {
+      stack.removeLast();
+    }
+    _currentRoute = previousRoute;
+  }
+
+  BuildContext get context {
+    return wrapper2Key.currentContext ?? wrapperKey.currentContext ?? navigationKey.currentContext!;
+  }
+
   void goNamed(
-    RouteNames route, {
+    RouteName route, {
     Map<String, String> pathParameters = const <String, String>{},
     Map<String, dynamic> queryParameters = const <String, dynamic>{},
     Object? extra,
+  }) {
+    if (pendingRouteFunction != null) {
+      pendingRouteFunction!();
+      return;
+    }
+  }
+
+  Future<T?> openDialog<T>({
+    required Widget dialog,
+    bool barrierDismissible = true,
+    Color? barrierColor = Colors.black54,
+    String? barrierLabel,
+    bool useSafeArea = true,
+    bool useRootNavigator = true,
+    RouteSettings? routeSettings,
+    Offset? anchorPoint,
+    TraversalEdgeBehavior? traversalEdgeBehavior,
   });
 
-  /// Push a location onto the page stack.
-  ///
-  /// See also:
-  /// * [pushReplacement] which replaces the top-most page of the page stack and
-  ///   always uses a new page key.
-  /// * [replace] which replaces the top-most page of the page stack but treats
-  ///   it as the same page. The page key will be reused. This will preserve the
-  ///   state and not run any page animation.
-  Future<T?> push<T extends Object?>(String location, {Object? extra});
-
-  /// Navigate to a named route onto the page stack.
-  Future<T?> pushNamed<T extends Object?>(
-    RouteNames route, {
-    Map<String, String> pathParameters = const <String, String>{},
-    Map<String, dynamic> queryParameters = const <String, dynamic>{},
-    Object? extra,
+  Future<T?> openBottomSheet<T>({
+    required Widget bottomSheet,
+    Color? backgroundColor,
+    String? barrierLabel,
+    double? elevation,
+    ShapeBorder? shape,
+    Clip? clipBehavior,
+    BoxConstraints? constraints,
+    Color? barrierColor,
+    bool isScrollControlled = false,
+    bool useRootNavigator = false,
+    bool isDismissible = true,
+    bool enableDrag = true,
+    bool? showDragHandle,
+    bool useSafeArea = false,
+    RouteSettings? routeSettings,
+    AnimationController? transitionAnimationController,
+    Offset? anchorPoint,
   });
 
-  /// Returns `true` if there is more than 1 page on the stack.
-  bool canPop();
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> openSnackBar(SnackBar content);
 
-  /// Pop the top page off the Navigator's page stack by calling
-  /// [Navigator.pop].
-  void pop<T extends Object?>([T? result]);
-
-  /// Replaces the top-most page of the page stack with the given URL location
-  /// w/ optional query parameters, e.g. `/family/f2/person/p1?color=blue`.
-  ///
-  /// See also:
-  /// * [go] which navigates to the location.
-  /// * [push] which pushes the given location onto the page stack.
-  /// * [replace] which replaces the top-most page of the page stack but treats
-  ///   it as the same page. The page key will be reused. This will preserve the
-  ///   state and not run any page animation.
-  void pushReplacement(RouteNames route, {Object? extra});
-
-  /// Replaces the top-most page of the page stack with the named route w/
-  /// optional parameters, e.g. `name='person', pathParameters={'fid': 'f2', 'pid':
-  /// 'p1'}`.
-  ///
-  /// See also:
-  /// * [goNamed] which navigates a named route.
-  /// * [pushNamed] which pushes a named route onto the page stack.
-  void pushReplacementNamed(
-      RouteNames route, {
-    Map<String, String> pathParameters = const <String, String>{},
-    Map<String, dynamic> queryParameters = const <String, dynamic>{},
-    Object? extra,
+  CancelFunc showTextToast({
+    required String text,
   });
 
-  /// Replaces the top-most page of the page stack with the given one but treats
-  /// it as the same page.
-  ///
-  /// The page key will be reused. This will preserve the state and not run any
-  /// page animation.
-  ///
-  /// See also:
-  /// * [push] which pushes the given location onto the page stack.
-  /// * [pushReplacement] which replaces the top-most page of the page stack but
-  ///   always uses a new page key.
-  void replace(RouteNames route, {Object? extra});
+  void openDrawer();
 
-  /// Replaces the top-most page with the named route and optional parameters,
-  /// preserving the page key.
-  ///
-  /// This will preserve the state and not run any page animation. Optional
-  /// parameters can be provided to the named route, e.g. `name='person',
-  /// pathParameters={'fid': 'f2', 'pid': 'p1'}`.
-  ///
-  /// See also:
-  /// * [pushNamed] which pushes the given location onto the page stack.
-  /// * [pushReplacementNamed] which replaces the top-most page of the page
-  ///   stack but always uses a new page key.
-  void replaceNamed(
-      RouteNames route, {
-    Map<String, String> pathParameters = const <String, String>{},
-    Map<String, dynamic> queryParameters = const <String, dynamic>{},
-    Object? extra,
+  RouteName? pop({dynamic result});
+
+  bool get isDialogOpen => openedDialogList.isNotEmpty;
+
+  bool get isBottomSheetOpen => openedBottomSheetList.isNotEmpty;
+
+  bool get isDialogOrBottomSheetOpen => openedDialogOrBottomSheetList.isNotEmpty;
+
+  void popAllDialogs({dynamic result}) {
+    while (isDialogOpen) {
+      pop(result: result);
+      String last = openedDialogOrBottomSheetList.removeLast();
+      bool isDialog = openedDialogList.contains(last);
+      if (isDialog) {
+        openedDialogList.remove(last);
+      }
+    }
+  }
+
+  void popAllBottomSheets({dynamic result}) {
+    while (isBottomSheetOpen) {
+      pop(result: result);
+      String last = openedDialogOrBottomSheetList.removeLast();
+      bool isBottomSheet = openedBottomSheetList.contains(last);
+      if (isBottomSheet) {
+        openedBottomSheetList.remove(last);
+      }
+    }
+  }
+
+  void popAllPopUps({dynamic result}) {
+    while (openedDialogOrBottomSheetList.isNotEmpty) {
+      _popLastDialogOrBottomSheet(result: result);
+    }
+  }
+
+  void _popLastDialogOrBottomSheet({dynamic result}) {
+    pop(result: result);
+    String last = openedDialogOrBottomSheetList.removeLast();
+    bool isBottomSheet = openedBottomSheetList.contains(last);
+    if (isBottomSheet) {
+      openedBottomSheetList.remove(last);
+    } else {
+      openedDialogList.remove(last);
+    }
+  }
+
+  void popUntilRoute({required bool Function(RouteName) verifyCondition}) async {
+    popAllPopUps();
+    RouteName? previousRoute;
+    do {
+      previousRoute = pop();
+    } while (previousRoute == null ? false : !verifyCondition(previousRoute));
+  }
+
+  void popUntilPopUp({required bool Function(String) verifyCondition, dynamic result}) {
+    if (openedDialogOrBottomSheetList.isEmpty) return;
+
+    String storedPopUpName = '';
+    do {
+      _popLastDialogOrBottomSheet(result: result);
+      storedPopUpName = _getPopUpNameFromRegisteredString(popUpNameAndKey: openedDialogOrBottomSheetList.last);
+    } while (!verifyCondition(storedPopUpName));
+  }
+
+  bool canPopUntilPopUp({required String popUpName}) {
+    if (openedDialogOrBottomSheetList.isEmpty) return false;
+
+    //use sublist to skip checking the last one. it pops anyway even if it is equal to the input
+    bool nameIsInDialogsOrBottomSheets = openedDialogOrBottomSheetList
+        .sublist(0, openedDialogOrBottomSheetList.length - 1)
+        .any((element) => _getPopUpNameFromRegisteredString(popUpNameAndKey: element) == popUpName);
+
+    return nameIsInDialogsOrBottomSheets;
+  }
+
+  void registerPopUp({
+    required String runtimeType,
+    required bool isDialog,
+    Key? key,
+  }) {
+    String popUpNameAndKey = createPopUpNameAndKeyString(name: runtimeType, key: key);
+    _addPopUpNameAndKey(popUpNameAndKey: popUpNameAndKey, isDialog: isDialog);
+  }
+
+  void _addPopUpNameAndKey({required String popUpNameAndKey, required bool isDialog}) {
+    openedDialogOrBottomSheetList.add(popUpNameAndKey);
+    if (isDialog) {
+      openedDialogList.add(popUpNameAndKey);
+    } else {
+      openedBottomSheetList.add(popUpNameAndKey);
+    }
+  }
+
+  void removePopUpNameAndKey({required String nameAndKey, required bool isDialog}) {
+    openedDialogOrBottomSheetList.remove(nameAndKey);
+    if (isDialog) {
+      openedDialogList.remove(nameAndKey);
+    } else {
+      openedBottomSheetList.remove(nameAndKey);
+    }
+  }
+
+  String createPopUpNameAndKeyString({required String name, Key? key}) {
+    String keyString = (key ?? UniqueKey()).toString();
+    return "$name$popUpNameAndKeySeparator$keyString";
+  }
+
+  String _getPopUpNameFromRegisteredString({required String popUpNameAndKey}) {
+    List<String> popUpStringParts = popUpNameAndKey.split(popUpNameAndKeySeparator);
+    return popUpStringParts.first;
+  }
+
+  ///The alignment priority is higher than the others.
+  ///To remove an overlay use the following code:
+  ///overlayEntry.remove();
+  ///overlayEntry.dispose();
+  OverlayEntry showOverlay<T>({
+    required Widget child,
+    Alignment? alignment,
+    double? fromTop,
+    double? fromBottom,
+    double? fromRight,
+    double? fromLeft,
+    bool canSizeOverlay = false,
+    bool maintainState = false,
+    bool opaque = false,
+  }) {
+    OverlayEntry overlayEntry = OverlayEntry(
+      canSizeOverlay: canSizeOverlay,
+      maintainState: maintainState,
+      opaque: opaque,
+      builder: (context) {
+        return Stack(
+          children: [
+            Positioned(
+              top: fromTop,
+              bottom: fromBottom,
+              right: fromRight,
+              left: fromLeft,
+              child: Material(
+                type: MaterialType.transparency,
+                child: Container(
+                  alignment: alignment,
+                  // color: Colors.red,
+                  child: child,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+
+    Overlay.of(context, debugRequiredFor: child).insert(overlayEntry);
+    return overlayEntry;
+  }
+}
+
+class RouteProvider extends InheritedNotifier<_RouteNameNotifier> {
+  const RouteProvider._({
+    super.key,
+    super.notifier,
+    required super.child,
   });
 
+  factory RouteProvider({Key? key, required Widget child}) {
+    return RouteProvider._(
+      key: key,
+      notifier: _RouteNameNotifier.instance,
+      child: child,
+    );
+  }
 
-  void snackbar(
-      Widget content, {
-        Color? backgroundColor,
-        SnackBarAction? action,
-        Duration? duration,
-        IconData? icon,
-        EdgeInsetsGeometry? padding,
-        EdgeInsetsGeometry? margin,
-      });
+  static RouteName? of(BuildContext context) {
+    return context.dependOnInheritedWidgetOfExactType<RouteProvider>()!.notifier!.value;
+  }
 
-  void hideSnackBars();
+  @override
+  bool updateShouldNotify(covariant InheritedNotifier<_RouteNameNotifier> oldWidget) {
+    return notifier!.value != oldWidget.notifier!.value;
+  }
 
-  Future<dynamic> dialog(Widget content);
+  static updateRoute({required BuildContext context, required RouteName? routeName}) {
+    _RouteNameNotifier.instance.updateRoute(newRoute: routeName);
+  }
+}
 
-  Future<dynamic> bottomSheet(Widget content);
+class _RouteNameNotifier extends ChangeNotifier {
+  RouteName? value;
 
-  void popDialog({dynamic result, Function? onPop});
+  _RouteNameNotifier._({required this.value});
+
+  static final _RouteNameNotifier instance = _RouteNameNotifier._(value: null);
+
+  void updateRoute({required RouteName? newRoute}) {
+    if (value != newRoute) {
+      value = newRoute;
+      notifyListeners();
+    }
+  }
 }

@@ -8,52 +8,70 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.17.3 <3.0.0"
 
+dependency_overrides:
+  intl: ^0.20.1
+  package_info_plus: ^8.1.2
+  device_info_plus: ^11.2.0
+  archive: ^4.0.2
+  flutter_svg: ^2.0.9
+  analyzer: ^6.5.0
+  get_it: ^8.0.3
+
+
+
 dependencies:
   flutter:
     sdk: flutter
 
-  cupertino_icons: ^1.0.2
-  go_router: ^14.0.2
-  get_it: ^7.7.0
-  freezed: ^2.5.2
-  hooks_riverpod: ^2.3.6
-  freezed_annotation: ^2.4.1
+  cupertino_icons: ^1.0.8
+  go_router: 14.2.0
+  get_it: ^8.0.3
+  freezed: ^2.5.7
+  hooks_riverpod: ^2.6.1
+  freezed_annotation: ^2.4.4
   json_annotation: ^4.9.0
   dartz: ^0.10.1
-  equatable: ^2.0.5
+  equatable: ^2.0.7
   get: ^4.6.6
-  connectivity_plus: ^6.0.3
-  signalr_netcore: ^1.3.7
-  convert: ^3.1.1
-  archive: ^3.5.1
+  connectivity_plus: ^6.1.1
+  signalr_netcore: ^1.4.0
+  convert: ^3.1.2
+  archive: ^4.0.2
   bot_toast: ^4.1.3
-  artemis_ui_kit: ^0.0.17
-  network_manager: ^0.1.24
-  shared_preferences: ^2.2.3
-  intl: ^0.19.0
-  url_launcher: ^6.2.6
-  path_provider: ^2.1.3
-  dio: ^5.4.3+1
+  artemis_ui_kit: ^0.0.19
+  network_manager: ^0.1.36
+  shared_preferences: ^2.3.5
+  intl: ^0.20.1
+  url_launcher: ^6.3.1
+  path_provider: ^2.1.5
+  dio: ^5.7.0
   flutter_spinkit: ^5.2.1
-  isar: ^3.1.0+1
-  isar_flutter_libs: ^3.1.0+1
+  #  isar: ^3.1.0+1
+  #  isar_flutter_libs: ^3.1.0+1
   artemis_utils: ^0.0.20
   flutter_vector_icons: ^2.0.0
-  package_info_plus: ^8.0.0
-  device_info_plus: ^10.1.0
+  package_info_plus: ^8.1.2
+  device_info_plus: ^11.2.0
   google_fonts: ^6.2.1
-  percent_indicator: ^4.2.3
-  cached_network_image: ^3.3.1
+  percent_indicator: ^4.2.4
+  cached_network_image: ^3.4.1
+  icons_plus: ^5.0.0
+  tree_navigation: ^1.1.1
+  ferry: ^0.16.1+2
+  gql_http_link: ^1.1.0
+  hive_flutter: ^1.1.0
+  ferry_hive_store: ^0.6.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.2
-  build_runner: ^2.4.6
+  flutter_lints: ^5.0.0
+  build_runner: ^2.4.14
   isar_generator: ^3.1.0+1
   json_serializable: ^6.7.1
-  riverpod_generator:
+  ferry_generator: ^0.12.0+2
+
 
 flutter:
 
@@ -115,35 +133,3 @@ flutter:
           weight: 400
         - asset: assets/fonts/signika/SignikaNegative-Bold.ttf
           weight: 700
-
-objectbox:
-  # Writes objectbox-model.json and objectbox.g.dart to lib/custom (and test/custom).
-  # output_dir: custom
-  # Or optionally specify the lib and test output folder separately.
-  output_dir:
-    lib: core/data_base
-  #   test: other
-
-msix_config:
-  display_name: {{project_name.titleCase()}}
-  publisher_display_name: ABOMIS Innovations Inc.
-  identity_name: ABOMISInnovationsInc.AbomisDCS
-  publisher: CN=2F524553-90DB-4FE5-B917-C1F735CC041B
-  msix_version: 1.0.0.0
-  icons_background_color: "#ffffff"
-  architecture: x64
-  capabilities: "internetClient"
-
-  store: false
-  #  publisher: CN=BF212345-5644-46DF-8668-012044C1B138
-  languages: "en-us"
-#  logo_path: "LOGO PATH HERE"
-#  output_path: "OUTPUT PATH HERE"
-  output_name: {{project_name.titleCase()}} Installer
-#  app_installer: #<-- app installer configuration
-#    publish_folder_path: "PubFolderPath"
-#    hours_between_update_checks: 0
-#    automatic_background_task: false
-#    update_blocks_activation: false
-#    show_prompt: true
-#    force_update_from_any_version: false

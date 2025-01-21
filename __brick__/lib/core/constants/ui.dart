@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:masonCheck/core/extenstions/context_exp.dart';
 
 class MyColors {
   MyColors._();
 
-  static const mainColor = Color(0xff4c6ef6);
+  static const mainColor = Color(0xff001b94);
+  static const scaffoldBg = Color(0xfff0f1f3);
+  static const shade = Color.fromRGBO(0,0,0,0.12);
   static const darkSlateBlue = Color(0xff133159);
   static const slateBlue = Color(0xff5f7b98);
   static const greyBG = Color(0xffeaeaea);
@@ -15,7 +18,10 @@ class MyColors {
   static const white5 = Color.fromRGBO(247, 247, 247, 1);
   static const white6 = Color.fromRGBO(237, 237, 237, 1);
   static const black1 = Color.fromRGBO(52, 52, 52, 1);
+  static const black2 = Color(0xFF0a1a3a);
   static const black = Color.fromRGBO(59, 59, 59, 1);
+  static const notImportant = Color(0xffb9b9b9);
+  static const disable = Color.fromRGBO(245, 245, 245, 0.5);
   static const black3 = Color.fromRGBO(59, 59, 59, 0.8);
   static const black7 = Color.fromRGBO(0, 0, 0, 0.07);
   static const black8 = Color.fromRGBO(0, 0, 0, 0.08);
@@ -32,10 +38,13 @@ class MyColors {
   static const veryLightBlue = Color.fromRGBO(230, 236, 255, 1);
   static const lightBlue = Color.fromRGBO(142, 219, 230, 1);
   static const lightBlueGrey = Color(0xffcbd1d8);
+  static const lightGreen = Color(0xffdce6e3);
   static const lightPeach = Color.fromRGBO(255, 204, 177, 1);
   static const greenishBeige = Color.fromRGBO(208, 204, 114, 1);
   static const eggshell = Color.fromRGBO(244, 243, 225, 1);
   static const dullOrange = Color.fromRGBO(217, 152, 65, 1);
+  static const orange = Color(0xffF57B00);
+  static const lightOrange = Color(0xffFFeddc);
   static const aquaMarine = Color.fromRGBO(77, 204, 182, 0.1);
   static const darkMint = Color.fromRGBO(72, 192, 162, 1);
   static const brownGrey = Color.fromRGBO(141, 141, 141, 1);
@@ -57,14 +66,17 @@ class MyColors {
   static const veryLightPink7 = Color.fromRGBO(255, 238, 237, 1);
   static const greenishTeal = Color.fromRGBO(46, 198, 157, 1);
   static const green = Color.fromRGBO(106, 240, 29, 1);
+  static const green2 = Color(0xff2fc488);
   static const macAndCheese = Color.fromRGBO(239, 176, 75, 1);
   static const oceanGreen = Color.fromRGBO(48, 141, 117, 1);
   static const butterscotch = Color.fromRGBO(239, 176, 75, 1);
   static const turquoise = Color.fromRGBO(10, 195, 159, 1);
   static const grapefruit = Color.fromRGBO(255, 93, 93, 1);
   static const red = Color.fromRGBO(238, 91, 92, 1);
-  static const shinyRed = Color(0xffff0647);
+  static const shinyRed = Color(0xfffa3030);
   static const lineColor = Color(0xffE1E1E1);
+  static const lineBorderColor = Color.fromRGBO(0, 0, 0, 0.12);
+  static const liveBG = Color(0xffF0F1f3);
   static const fadedBlue = Color(0xff7c8ac9);
   static const duskBlue = Color(0xff293a84);
   static const lightPeriwinkle = Color(0xffbdcaff);
@@ -78,12 +90,15 @@ class MyColors {
   static const chd = Color.fromRGBO(230, 50, 133, 1);
   static const autoSeat = Color.fromRGBO(252, 90, 15, 1);
   static const manualSeat = Color.fromRGBO(25, 163, 7, 1);
+  static const paxGrey = Color(0xffB9b9b9);
   static const checkinGreen = Color.fromRGBO(72, 192, 162, 1);
   static const boardingBlue = Color.fromRGBO(77, 111, 255, 1);
   static const reserveGreen = Color.fromRGBO(176, 255, 223, 1);
   static const evenRow = Color(0xfff8f8f8);
   static const oddRow = Color(0xffffffff);
   static const indexColor = Color(0xff3b3b3b);
+  static const travelDocColor = Color.fromARGB(100, 200, 100, 250);
+  static const darkRed = Color.fromRGBO(200, 0, 0, 1.0);
 
   static const materialColor = {
     50: Color.fromRGBO(77, 111, 255, .1),
@@ -102,14 +117,17 @@ class MyColors {
 class MyTheme {
   MyTheme._();
 
-  static ThemeData lightAbomis = ThemeData(
+  static ThemeData lightAbomis(BuildContext con) => ThemeData(
     useMaterial3: true,
-    fontFamily: "OpenSans",
+    // fontFamily: "OpenSans",
     primaryColor: MyColors.mainColor,
     canvasColor: Colors.transparent,
     brightness: Brightness.light,
     disabledColor: MyColors.brownGrey,
-    scaffoldBackgroundColor: Colors.white,
+    dialogTheme: DialogTheme(
+        insetPadding: EdgeInsets.symmetric(horizontal: con.isDesktop?con.width*0.3:12)
+    ),
+    scaffoldBackgroundColor: MyColors.scaffoldBg,
     tabBarTheme: TabBarTheme(labelPadding: EdgeInsets.zero, labelColor: Colors.blue, unselectedLabelColor: Colors.blue.withOpacity(0.5)),
     timePickerTheme: const TimePickerThemeData(),
     dividerTheme: const DividerThemeData(color: MyColors.lineColor, indent: 1, space: 1),
@@ -172,8 +190,11 @@ class TextStyles {
   TextStyles._();
 
   static const styleBold24Black = TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Color(0xff424242));
+  static const styleBold18Black = TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: Colors.black);
   static const styleBold16Grey = TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xff808080));
   static const styleBold16Black = TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: MyColors.black1);
+  static const styleBold12Black = TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: MyColors.black2);
   static const style16Grey = TextStyle(fontSize: 16, color: Color(0xff808080), fontWeight: FontWeight.w300);
   static const tagListHeader = TextStyle(fontWeight: FontWeight.bold, fontSize: 13);
+  static const appBarTitle = TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 18);
 }

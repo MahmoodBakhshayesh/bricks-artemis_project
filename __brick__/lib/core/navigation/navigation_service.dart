@@ -1,166 +1,133 @@
-import 'dart:developer';
-import '../../../core/interfaces/controller_int.dart';
-import '../../../core/interfaces/navigation_int.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'route_names.dart';
-import 'router.dart';
+import '../interfaces/navigation_int.dart';
+import 'routes.dart';
 
 class NavigationService extends NavigationInterface {
-  final List<int> _openedDialogs = [];
-
-  BuildContext get context => rootRouterKey.currentState!.context;
-
-  bool get isDialogOpened => _openedDialogs.isEmpty;
-  final Map<RouteNames, ControllerInterface> _registeredControllers = {};
-
-  void registerController(RouteNames route, ControllerInterface controller) {
-    _registeredControllers.putIfAbsent(route, () => controller);
-  }
-
-  void registerControllers(Map<RouteNames, ControllerInterface> map) {
-    _registeredControllers.addAll(map);
-  }
-
-  void initRegisteredController(RouteNames route) {
-    _registeredControllers[route]?.onInit.call();
-  }
-
   @override
   void goNamed(
-    RouteNames route, {
+    RouteName route, {
     Map<String, String> pathParameters = const <String, String>{},
     Map<String, dynamic> queryParameters = const <String, dynamic>{},
     Object? extra,
+  }) {
+    if (pendingRouteFunction != null) {
+      Function copiedFunction = pendingRouteFunction!;
+      pendingRouteFunction = null;
+      copiedFunction();
+    } else {
+      context.goNamed(
+        route.name,
+        pathParameters: pathParameters,
+        extra: extra,
+        queryParameters: queryParameters,
+      );
+    }
+  }
+
+  @override
+  Future<T?> openDialog<T>({
+    required Widget dialog,
+    bool barrierDismissible = true,
+    Color? barrierColor = Colors.black54,
+    String? barrierLabel,
+    bool useSafeArea = true,
+    bool useRootNavigator = false,
+    RouteSettings? routeSettings,
+    Offset? anchorPoint,
+    TraversalEdgeBehavior? traversalEdgeBehavior,
   }) async {
-    context.goNamed(route.name, pathParameters: pathParameters, queryParameters: queryParameters, extra: extra);
-    initRegisteredController(route);
-  }
+    String runtimeType = dialog.runtimeType.toString();
+    registerPopUp(runtimeType: runtimeType, key: dialog.key, isDialog: true);
+    String dialogNameAndKey = openedDialogOrBottomSheetList.last;
 
-  @override
-  bool canPop() {
-    return context.canPop();
-  }
-
-  @override
-  void go(String location, {Object? extra}) {
-    context.go(location, extra: extra);
-  }
-
-  @override
-  String namedLocation(RouteNames route, {Map<String, String> pathParameters = const <String, String>{}, Map<String, dynamic> queryParameters = const <String, dynamic>{}}) {
-    return context.namedLocation(route.name, pathParameters: pathParameters, queryParameters: queryParameters);
-  }
-
-  @override
-  void pop<T extends Object?>([T? result]) {
-    return context.pop(result);
-  }
-
-  @override
-  Future<T?> push<T extends Object?>(String location, {Object? extra}) {
-    return context.push(location, extra: extra);
-  }
-
-  @override
-  Future<T?> pushNamed<T extends Object?>(RouteNames route, {Map<String, String> pathParameters = const <String, String>{}, Map<String, dynamic> queryParameters = const <String, dynamic>{}, Object? extra}) {
-    initRegisteredController(route);
-    return context.pushNamed(route.name, pathParameters: pathParameters, queryParameters: queryParameters, extra: extra);
-
-  }
-
-  @override
-  void pushReplacement(RouteNames route, {Object? extra}) {
-    initRegisteredController(route);
-    return context.pushReplacement(route.path, extra: extra);
-  }
-
-  @override
-  void pushReplacementNamed(RouteNames route, {Map<String, String> pathParameters = const <String, String>{}, Map<String, dynamic> queryParameters = const <String, dynamic>{}, Object? extra}) {
-    initRegisteredController(route);
-    return context.pushReplacementNamed(route.name, pathParameters: pathParameters, queryParameters: queryParameters, extra: extra);
-  }
-
-  @override
-  void replace(RouteNames route, {Object? extra}) {
-    initRegisteredController(route);
-    return context.replace(route.path, extra: extra);
-  }
-
-  @override
-  void replaceNamed(RouteNames route, {Map<String, String> pathParameters = const <String, String>{}, Map<String, dynamic> queryParameters = const <String, dynamic>{}, Object? extra}) {
-    initRegisteredController(route);
-    return context.replaceNamed(route.name, pathParameters: pathParameters, queryParameters: queryParameters, extra: extra);
-  }
-
-  @override
-  Future dialog(Widget content) async {
-    _openedDialogs.add(_openedDialogs.length);
-    late dynamic res;
-    await showDialog(
+    T? output;
+    output = await showDialog<T>(
       context: context,
-      barrierDismissible: true,
-      useRootNavigator: false,
-      builder: (context) => content,
-    ).then((value) {
-      log("Dialog Then $value");
-      _openedDialogs.removeLast();
-      res = value;
-      return value;
-    });
-    return res;
+      builder: (_) => dialog,
+      barrierDismissible: barrierDismissible,
+      barrierColor: barrierColor,
+      barrierLabel: barrierLabel,
+      useSafeArea: useSafeArea,
+      useRootNavigator: useRootNavigator,
+      routeSettings: routeSettings ?? RouteSettings(name: dialogNameAndKey),
+      anchorPoint: anchorPoint,
+      traversalEdgeBehavior: traversalEdgeBehavior,
+    );
+
+    removePopUpNameAndKey(nameAndKey: dialogNameAndKey, isDialog: true);
+    return output;
   }
 
   @override
-  Future bottomSheet(Widget content) async {
-    _openedDialogs.add(_openedDialogs.length);
-    late dynamic res;
-    await showModalBottomSheet(
-        useRootNavigator: true,
-        context: context,
-        builder: (BuildContext context) {
-          return content;
-        }).then((value) {
-      log("Dialog Then $value");
-      _openedDialogs.removeLast();
-      res = value;
-      return value;
-    });
-    return res;
-  }
+  Future<T?> openBottomSheet<T>({
+    required Widget bottomSheet,
+    Color? backgroundColor,
+    String? barrierLabel,
+    double? elevation,
+    ShapeBorder? shape,
+    Clip? clipBehavior,
+    BoxConstraints? constraints,
+    Color? barrierColor,
+    bool isScrollControlled = false,
+    bool useRootNavigator = false,
+    bool isDismissible = true,
+    bool enableDrag = true,
+    bool? showDragHandle,
+    bool useSafeArea = false,
+    RouteSettings? routeSettings,
+    AnimationController? transitionAnimationController,
+    Offset? anchorPoint,
+  }) async {
+    String runtimeType = bottomSheet.runtimeType.toString();
+    registerPopUp(runtimeType: runtimeType, key: bottomSheet.key, isDialog: false);
+    String bottomSheetNameAndKey = openedDialogOrBottomSheetList.last;
 
-  @override
-  void hideSnackBars() {
-    ScaffoldMessenger.of(context).clearSnackBars();
-  }
-
-  @override
-  void popDialog({result, Function? onPop}) {
-    Navigator.pop(context, result);
-    onPop?.call();
-  }
-
-  @override
-  void snackbar(Widget content, {Color? backgroundColor, SnackBarAction? action, Duration? duration, IconData? icon, EdgeInsetsGeometry? padding, EdgeInsetsGeometry? margin}) {
-    ScaffoldMessenger.of(context).clearSnackBars();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      margin: margin,
-      padding: padding,
-      content: icon == null
-          ? content
-          : Row(
-              children: [Icon(icon, color: Colors.white), const SizedBox(width: 8), Expanded(child: content)],
-            ),
+    T? output = await showModalBottomSheet<T>(
+      context: context,
+      builder: (_) => bottomSheet,
       backgroundColor: backgroundColor,
-      action: action,
-      duration: duration ?? const Duration(seconds: 3),
-      behavior: SnackBarBehavior.floating,
-    ));
+      barrierLabel: barrierLabel,
+      elevation: elevation,
+      shape: shape,
+      clipBehavior: clipBehavior,
+      constraints: constraints,
+      barrierColor: barrierColor,
+      isScrollControlled: isScrollControlled,
+      useRootNavigator: useRootNavigator,
+      isDismissible: isDismissible,
+      enableDrag: enableDrag,
+      showDragHandle: showDragHandle,
+      useSafeArea: useSafeArea,
+      routeSettings: routeSettings ?? RouteSettings(name: bottomSheetNameAndKey),
+      transitionAnimationController: transitionAnimationController,
+      anchorPoint: anchorPoint,
+    );
+
+    removePopUpNameAndKey(nameAndKey: bottomSheetNameAndKey, isDialog: false);
+    return output;
   }
 
-  void goBack({dynamic result, required void Function()? onPop}) {
-    pop(result);
-    onPop?.call();
-    // navigatorKey.currentState!.pop(result);
+  @override
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason> openSnackBar(SnackBar snackBar) {
+    return ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
+  @override
+  CancelFunc showTextToast({required String text}) {
+    CancelFunc cancel = BotToast.showText(text: text);
+    return cancel;
+  }
+
+  @override
+  void openDrawer() {
+    Scaffold.of(context).openDrawer();
+  }
+
+  @override
+  RouteName? pop({dynamic result}) {
+    context.pop(result);
+    return previousRoute;
   }
 }

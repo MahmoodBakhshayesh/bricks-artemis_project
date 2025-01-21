@@ -27,7 +27,7 @@ class NetworkManagerImp implements NetworkManagerInterface {
       throw ServerException(
         code: networkResponse.responseCode,
         message: networkResponse.extractedMessage!,
-        trace: StackTrace.fromString("RemoteDataSource.getSalt"),
+        trace: StackTrace.fromString("NetworkManagerImp.post"),
       );
     }
   }
