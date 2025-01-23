@@ -127,46 +127,46 @@ class _MyTextFieldState extends State<MyTextField> {
                 suffixIcon: widget.locked
                     ? const Icon(Icons.lock)
                     : Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          widget.isPassword
-                              ? GestureDetector(
-                                  onTap: () {
-                                    obscureText = !obscureText;
-                                    setState(() {});
-                                  },
-                                  child: Icon(obscureText ? Ionicons.eye : Ionicons.eye_off, size: 20))
-                              : const SizedBox(),
-                          widget.suffixIcon ?? const SizedBox(),
-                          widget.showClearButton
-                              ? GestureDetector(
-                                  child: const Icon(Icons.clear),
-                                  onTap: () {
-                                    widget.controller?.clear();
-                                  },
-                                )
-                              : const SizedBox()
-                        ],
-                      ),
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    widget.isPassword
+                        ? GestureDetector(
+                        onTap: () {
+                          obscureText = !obscureText;
+                          setState(() {});
+                        },
+                        child: Icon(obscureText ? Ionicons.eye : Ionicons.eye_off, size: 20))
+                        : const SizedBox(),
+                    widget.suffixIcon ?? const SizedBox(),
+                    widget.showClearButton
+                        ? GestureDetector(
+                      child: const Icon(Icons.clear),
+                      onTap: () {
+                        widget.controller?.clear();
+                      },
+                    )
+                        : const SizedBox()
+                  ],
+                ),
                 counterText: '',
                 label: widget.label == null
                     ? null
                     : widget.required
-                        ? Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(widget.label ?? ''),
-                              const SizedBox(width: 4),
-                              const Icon(Icons.circle, color: Colors.red, size: 7.5),
-                            ],
-                          )
-                        : Text(widget.label!),
+                    ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(widget.label ?? ''),
+                    const SizedBox(width: 4),
+                    const Icon(Icons.circle, color: Colors.red, size: 7.5),
+                  ],
+                )
+                    : Text(widget.label!),
                 // hintText: widget.label,
                 errorText: null,
                 // border: OutlineInputBorder(),
                 contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 border: MaterialStateOutlineInputBorder.resolveWith(
-                  (states) {
+                      (states) {
                     Color borderColor = MyColors.black;
                     double borderWidth = 1;
                     if (_errorMsg != null) {

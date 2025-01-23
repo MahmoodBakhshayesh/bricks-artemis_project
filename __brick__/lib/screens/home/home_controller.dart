@@ -1,9 +1,9 @@
-
 import '../../core/interfaces/controller_int.dart';
-import 'home_state.dart';
+import 'package:logging/logging.dart';
 
 class HomeController extends ControllerInterface {
-  late HomeState homeState = ref.read(homeProvider);
+  final _log = Logger('HomeController');
+
 
   void logout() {}
   // UseCase UseCase = UseCase(repository: Repository());

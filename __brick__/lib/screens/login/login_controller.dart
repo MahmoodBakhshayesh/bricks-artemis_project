@@ -8,11 +8,16 @@ import '../../core/utils_and_services/handlers/failure_handler.dart';
 import '../../initialize.dart';
 import 'login_state.dart';
 import 'usecases/login_usecase.dart';
+import 'package:logging/logging.dart';
+
 
 class LoginController extends ControllerInterface {
   late LoginState loginState = ref.read(loginProvider);
+  final _log = Logger('LoginController');
 
   Future<User?> login() async {
+    _log.warning("Logging in");
+
     User? user;
     DeviceInfoServiceImp deviceInfoService = getIt<DeviceInfoServiceImp>();
     DeviceInfo deviceInfo = deviceInfoService.getInfo();
