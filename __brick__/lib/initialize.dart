@@ -6,6 +6,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import '../../core/interfaces/network_info_int.dart';
 import '../../core/utils_and_services/app_config.dart';
 import '../../core/utils_and_services/app_data.dart';
+import 'package:tree_navigation/tree_navigation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:path_provider/path_provider.dart';
@@ -35,7 +36,7 @@ Future<void> init() async {
   getIt.allowReassignment = true;
 
   WidgetsFlutterBinding.ensureInitialized();
-  SharedPreferencesInterface sp = SharedPreferencesImp();
+  SharedPreferencesImp sp = SharedPreferencesImp();
   getIt.registerFactory(() => sp);
 
   await _initDataBase();
@@ -113,6 +114,56 @@ Future<void> _initConfig() async {
 
 Future<void> _initDataBase() async {
 
+}
+
+Future<void> initNavigation() async {
+  TreeNavigation.init(
+    globalKeyList: [topKey, shellKey],
+    routeInfoList: Routes.allRoutes,
+    useNavigationOne: true,
+    routeTreeDefaultPageBuilder: (_, state, child, name) => MyCustomTransitionPage(
+      key: state.pageKey,
+      child: child,
+      name: name,
+      transitionsBuilder: (_, animation, ___, widget) {
+        return FadeTransition(
+          opacity: animation,
+          child: widget,
+        );
+      },
+    ),
+    routeTreeDefaultShellPageBuilder: (_, state, parent, child) => MyCustomTransitionPage(
+      key: state.pageKey,
+      child: parent(child),
+      transitionsBuilder: (_, animation, ___, widget) {
+        const begin = Offset(0.0, 1.0);
+        const end = Offset.zero;
+        final tween = Tween(begin: begin, end: end);
+        final offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: widget,
+        );
+      },
+    ),
+  );
+  NavigationInterface ns = TreeNavigation.navigator;
+  GetIt.instance.registerSingleton(() => ns);
+  LoginController loginController = LoginController();
+  HomeController homeController = HomeController();
+
+
+  getIt.registerSingleton(loginController);
+  getIt.registerSingleton(homeController);
+
+
+  TreeNavigation.navigator.registerAllControllers({
+    Routes.login: loginController,
+    Routes.home: homeController,
+  });
+
+  print("registerAllControllers");
 }
 
 Future<void> _initPackages() async {

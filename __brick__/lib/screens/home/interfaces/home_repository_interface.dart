@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
+import '../../../core/interfaces/result_int.dart';
 
 abstract class HomeRepositoryInterface {
-  // Future<Either<Failure, HomeResponse>> home(HomeRequest request);
+  // Future<Result<HomeResponse>> home(HomeRequest request);
 }

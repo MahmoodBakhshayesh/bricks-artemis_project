@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:masonCheck/core/extenstions/context_exp.dart';
+import '../../core/extenstions/context_exp.dart';
 
 class MyColors {
   MyColors._();

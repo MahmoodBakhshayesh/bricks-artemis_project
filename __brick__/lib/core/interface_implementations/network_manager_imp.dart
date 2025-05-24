@@ -13,9 +13,21 @@ class NetworkManagerImp implements NetworkManagerInterface {
   NetworkManagerImp();
 
   @override
-  Future<ResponseImplementation> post(RequestInterface request) async {
-    NetworkRequest networkRequest = NetworkRequest(api: Apis.baseUrl, data: request.toJson());
-    NetworkResponse networkResponse = await networkRequest.post();
+  Future<ResponseImplementation> post(RequestInterface request, {String? api, Map<String, String>? headers, Duration? timeout}) async {
+    NetworkOption option = NetworkOption();
+
+    String apiAddress = api == null
+        ? option.baseUrl!
+        : api.contains("http")
+        ? api
+        : option.baseUrl! + api;
+
+    dynamic reqJson = request.toJson();
+    NetworkRequest networkRequest = NetworkRequest(api: apiAddress, data: reqJson);
+
+    if (headers != null) {
+      networkRequest.options.headers?.addAll(headers);
+    }
     if (networkResponse.status) {
       try {
         ResponseImplementation res = ResponseImplementation.fromJson(networkResponse.responseBody);
@@ -32,23 +44,42 @@ class NetworkManagerImp implements NetworkManagerInterface {
     }
   }
 
-  @override
-  Future<ResponseImplementation> get(String url) async {
-    dio.Dio d = dio.Dio(dio.BaseOptions(
-        responseType: dio.ResponseType.bytes,
-        followRedirects: false,
-        validateStatus: (status) {
-          return (status ?? 0) < 500;
-        }));
-    var response = await d.get(url);
 
-    // NetworkRequest networkRequest = NetworkRequest(api: url, data: '');
-    // NetworkResponse networkResponse = await networkRequest.get();
-    ResponseImplementation res = ResponseImplementation(
-      status: (response.statusCode == 200) ? 1 : -1,
-      message: response.statusMessage ?? 'Unknown Error',
-      body: response.data,
-    );
-    return res;
+  @override
+  Future<ResponseImplementation> get(String? url,{Map<String, String>? headers,}) async {
+    NetworkOption option = NetworkOption();
+    String apiAddress = url == null
+        ? option.baseUrl!
+        : url.contains("http")
+        ? url
+        : option.baseUrl! + url;
+
+    NetworkRequest networkRequest = NetworkRequest(api: apiAddress, data: '');
+    String? token = getIt<WidgetRef>().read(userProvider)?.token;
+    if (token != null) {
+      networkRequest.options.headers?.addAll({"Authorization": "Bearer $token"});
+    }
+
+    if (headers != null) {
+      networkRequest.options.headers?.addAll(headers);
+    }
+    NetworkResponse networkResponse = await networkRequest.get();
+
+    if (networkResponse.status) {
+      try {
+        print(networkResponse.responseBody);
+        ResponseImplementation res = ResponseImplementation.fromJson(networkResponse.responseBody);
+        return res;
+      } catch (e, trace) {
+        throw ParseException(message: e.toString(), trace: trace);
+      }
+    } else {
+      throw ServerException(
+        code: networkResponse.responseCode,
+        message: networkResponse.extractedMessage!,
+        trace: StackTrace.fromString("NetworkManagerImp.get"),
+      );
+    }
+    // return res;
   }
 }

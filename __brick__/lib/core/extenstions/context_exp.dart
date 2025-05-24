@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:math';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 extension BuldContextMore on BuildContext {
@@ -18,10 +18,14 @@ extension BuldContextMore on BuildContext {
     return (Platform.isIOS || Platform.isAndroid) && width > 600;
   }
   bool get isDesktop {
+    if(kIsWeb) return true;
     return Platform.isMacOS || Platform.isWindows;
   }
   double get width {
     return MediaQuery.of(this).size.width;
+  }
+  double get height{
+    return MediaQuery.of(this).size.height;
   }
   EdgeInsets? get getDialogPadding {
     return EdgeInsets.symmetric(horizontal:isMyTablet?width*0.25: isDesktop?  width*.3:12);
