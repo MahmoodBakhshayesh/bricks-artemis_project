@@ -3,9 +3,9 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/__brick__/.pub" />
-      <excludeFolder url="file://$MODULE_DIR$/__brick__/.dart_tool" />
-      <excludeFolder url="file://$MODULE_DIR$/__brick__/build" />
+      <excludeFolder url="file://$MODULE_DIR$/brickold/.dart_tool" />
+      <excludeFolder url="file://$MODULE_DIR$/brickold/.pub" />
+      <excludeFolder url="file://$MODULE_DIR$/brickold/build" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
