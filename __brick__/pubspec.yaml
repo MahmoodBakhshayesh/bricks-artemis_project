@@ -8,6 +8,7 @@ version: 1.0.0+1
 environment:
   sdk: "3.5.0"
 
+
 dependency_overrides:
   intl: ^0.20.1
   package_info_plus: ^8.1.2
