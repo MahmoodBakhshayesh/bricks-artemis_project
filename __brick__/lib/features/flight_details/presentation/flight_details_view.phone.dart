@@ -13,8 +13,12 @@ class FlightDetailsViewPhone extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final viewState = ref.watch(flightDetailsStateProvider);
     final controller = ref.watch(flightDetailsControllerProvider);
-
-    return viewState.when(
+    if (controller == null) {
+      return SizedBox();
+    }
+    return Scaffold(
+      appBar: AppBar(),
+      body: viewState.when(
       loading: () => const Center(child: CircularProgressIndicator()),
       error: (err, st) => Center(child: Text('Error: $err')),
       data: (details) => RefreshIndicator(
@@ -30,7 +34,7 @@ class FlightDetailsViewPhone extends ConsumerWidget {
             ),
             const Divider(),
             ...details.passengers.map(
-              (passenger) => ListTile(
+                  (passenger) => ListTile(
                 title: Text(passenger),
 
               ),
@@ -38,6 +42,6 @@ class FlightDetailsViewPhone extends ConsumerWidget {
           ],
         ),
       ),
-    );
+    ),);
   }
 }

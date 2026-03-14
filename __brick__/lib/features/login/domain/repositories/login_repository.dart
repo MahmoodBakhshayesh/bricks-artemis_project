@@ -16,8 +16,8 @@ class LoginRepository implements LoginRepositoryInterface {
 
   static LoginRepository builder() {
     return LoginRepository(
-      remoteDataSource: GetIt.instance.get(instanceName: 'AuthRemoteDataSource'),
-      localDataSource: GetIt.instance.get(instanceName: 'AuthLocalDataSource'),
+      remoteDataSource: GetIt.instance.get(instanceName: 'LoginRemoteDataSource'),
+      localDataSource: GetIt.instance.get(instanceName: 'LoginLocalDataSource'),
     );
   }
 

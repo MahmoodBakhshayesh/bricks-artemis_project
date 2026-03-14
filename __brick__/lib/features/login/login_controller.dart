@@ -1,6 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../core/controllers/base_controller.dart';
+import '../../core/data/app_data.dart';
 import 'login_view_state.dart';
 import 'usecases/login_usecase.dart';
 
@@ -16,6 +17,7 @@ class LoginController extends BaseController {
   final LoginUsecase _loginUsecase;
   LoginController(super.ref, this._loginUsecase);
 
+
   Future<void> login(String username, String password) async {
     logger.i("Attempting login for user: '$username'");
     ref.read(loginErrorMessageProvider.notifier).state = null;
@@ -28,6 +30,7 @@ class LoginController extends BaseController {
       if (loginResponse.success) {
         logger.i("Login successful for user: '$username'");
         ref.read(authenticatedUserProvider.notifier).state = loginResponse.user;
+        AppData.instance.setUserId(loginResponse.user!.id);
       } else {
         logger.w("Login failed for user: '$username'. Reason: ${loginResponse.message}");
         ref.read(loginErrorMessageProvider.notifier).state = loginResponse.message;

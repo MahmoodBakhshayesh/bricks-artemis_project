@@ -32,14 +32,14 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: ':id/details',
             name: AppRouteNames.flightDetails,
-            onExit: (context,state) {
-              ref.read(currentFlightIdProvider.notifier).update((s)=>null);
-              return true;
-            },
             builder: (context, state) {
               final flightId = state.pathParameters['id']!;
-              Future.microtask(() => ref.read(currentFlightIdProvider.notifier).update((s)=>flightId));
-              return const FlightDetailsView();
+              return ProviderScope(
+                overrides: [
+                  currentFlightIdProvider.overrideWithValue(flightId),
+                ],
+                child: FlightDetailsView(),
+              );
             },
           ),
         ],

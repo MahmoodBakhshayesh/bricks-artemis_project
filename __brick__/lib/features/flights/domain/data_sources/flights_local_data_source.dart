@@ -21,9 +21,9 @@ class FlightsLocalDataSource extends LocalDataSource implements FlightsDataSourc
     return FlightDetails(
       id: flightId,
       passengers: [
-        "Passenger 1",
-        "Passenger 2",
-        "Passenger 3"
+        "$flightId Passenger 1",
+        "$flightId Passenger 2",
+        "$flightId Passenger 3"
       ],
     );
   }

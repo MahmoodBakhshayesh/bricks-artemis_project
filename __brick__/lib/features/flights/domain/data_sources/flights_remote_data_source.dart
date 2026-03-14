@@ -9,9 +9,9 @@ class FlightsRemoteDataSource extends RemoteDataSource implements FlightsDataSou
   Future<List<Flight>> getFlights() async {
     await Future.delayed(const Duration(seconds: 1));
     return [
-      Flight(id: 'F123 (Remote)'),
-      Flight(id: 'F456 (Remote)'),
-      Flight(id: 'F789 (Remote)'),
+      Flight(id: 'F123'),
+      Flight(id: 'F456'),
+      Flight(id: 'F789'),
     ];
   }
 
@@ -21,9 +21,9 @@ class FlightsRemoteDataSource extends RemoteDataSource implements FlightsDataSou
     return FlightDetails(
       id: flightId,
       passengers: [
-       "Passenger 1",
-        "Passenger 2",
-        "Passenger 3"
+       "$flightId Passenger 1",
+        "$flightId Passenger 2",
+        "$flightId Passenger 3"
       ],
     );
   }

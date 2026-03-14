@@ -1,19 +1,23 @@
+import 'dart:developer';
+
 import 'package:get_it/get_it.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../core/controllers/base_controller.dart';
 import '../flights/usecases/get_flight_details_usecase.dart';
 import 'flight_details_view_state.dart';
 
-final flightDetailsControllerProvider = Provider.autoDispose((ref) {
+final flightDetailsControllerProvider = Provider.autoDispose<FlightDetailsController>((ref) {
   final flightId = ref.watch(currentFlightIdProvider);
   final getFlightDetailsUsecase = GetIt.instance.get<GetFlightDetailsUsecase>();
-  final controller = FlightDetailsController(ref, flightId!, getFlightDetailsUsecase);
+  final controller = FlightDetailsController(ref, flightId, getFlightDetailsUsecase);
 
-  controller.init();
+  Future.microtask(() {
+    controller.init();
+  });
   ref.onDispose(() => controller.dispose());
 
   return controller;
-});
+}, dependencies: [currentFlightIdProvider]);
 
 class FlightDetailsController extends BaseController {
   final String _flightId;
