@@ -12,7 +12,7 @@ class AppData extends ChangeNotifier {
   late SharedPreferences _prefs;
 
   String? _token;
-  int? _userId;
+  String? _userId;
 
   String? get token => _token;
 
@@ -40,7 +40,7 @@ class AppData extends ChangeNotifier {
     }
   }
 
-  void setUserId(int? value) {
+  void setUserId(String? value) {
     if (_userId != value) {
       _userId = value;
       // if (value != null) {

@@ -1,5 +1,4 @@
 import 'package:get_it/get_it.dart';
-
 import '../entities/flight.dart';
 import '../interfaces/flights_data_source_interface.dart';
 import '../interfaces/flights_repository_interface.dart';
@@ -8,15 +7,17 @@ class FlightsRepository implements FlightsRepositoryInterface {
   final FlightsDataSourceInterface remoteDataSource;
   final FlightsDataSourceInterface localDataSource;
 
-  FlightsRepository({
+  FlightsRepository(
+      {
     required this.remoteDataSource,
     required this.localDataSource,
-  });
+  }
+  );
 
   static FlightsRepository builder() {
     return FlightsRepository(
-      remoteDataSource: GetIt.instance.get(instanceName: 'FlightsRemoteDataSource'),
-      localDataSource: GetIt.instance.get(instanceName: 'FlightsLocalDataSource'),
+      remoteDataSource: GetIt.instance.get(instanceName: 'FlightsDataSourceRemote'),
+      localDataSource: GetIt.instance.get(instanceName: 'FlightsDataSourceLocal'),
     );
   }
 
@@ -27,11 +28,14 @@ class FlightsRepository implements FlightsRepositoryInterface {
     // 2. If successful, save the data using localDataSource.
     // 3. If failed, try to load stale data from localDataSource.
     // For now, we'll just delegate to the remote source.
-    return remoteDataSource.getFlights();
+    return localDataSource.getFlights();
+    // return remoteDataSource.getFlights();
+    return [];
   }
 
   @override
   Future<FlightDetails> getFlightDetails(String flightId) {
+    // throw UnimplementedError();
     return remoteDataSource.getFlightDetails(flightId);
   }
 }

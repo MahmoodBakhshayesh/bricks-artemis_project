@@ -1,7 +1,7 @@
+import 'dart:developer';
 import 'package:get_it/get_it.dart';
-
-import '../../../../core/database/user/user_entity.dart';
 import '../../usecases/login_usecase.dart';
+import '../entities/user_entity.dart';
 import '../interfaces/login_data_source_interface.dart';
 import '../interfaces/login_repository_interface.dart';
 
@@ -16,20 +16,21 @@ class LoginRepository implements LoginRepositoryInterface {
 
   static LoginRepository builder() {
     return LoginRepository(
-      remoteDataSource: GetIt.instance.get(instanceName: 'LoginRemoteDataSource'),
-      localDataSource: GetIt.instance.get(instanceName: 'LoginLocalDataSource'),
+      remoteDataSource: GetIt.instance.get(instanceName: 'LoginDataSourceRemote'),
+      localDataSource: GetIt.instance.get(instanceName: 'LoginDataSourceLocal'),
     );
   }
 
   @override
   Future<LoginResponse> login(String username, String password) async {
     try {
-      final user = await remoteDataSource.getUserByUsername(username);
+      final user = await localDataSource.getUserByUsername(username);
       // Basic password check for the mock.
       if (user != null && user.password == password) {
         // In a real app, you would save the session token to local storage here.
         return LoginResponse(success: true, user: user, message: 'Success');
       } else {
+        log("$username $password");
         return LoginResponse(success: false, message: 'Invalid credentials');
       }
     } catch (e) {

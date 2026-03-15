@@ -1,5 +1,5 @@
-import '../../../../core/database/user/user_entity.dart';
 import '../../usecases/login_usecase.dart';
+import '../entities/user_entity.dart';
 
 abstract class LoginRepositoryInterface {
   Future<LoginResponse> login(String username, String password);

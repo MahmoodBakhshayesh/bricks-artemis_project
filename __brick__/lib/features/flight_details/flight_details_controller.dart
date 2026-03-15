@@ -11,9 +11,8 @@ final flightDetailsControllerProvider = Provider.autoDispose<FlightDetailsContro
   final getFlightDetailsUsecase = GetIt.instance.get<GetFlightDetailsUsecase>();
   final controller = FlightDetailsController(ref, flightId, getFlightDetailsUsecase);
 
-  Future.microtask(() {
-    controller.init();
-  });
+  Future.microtask(controller.init);
+
   ref.onDispose(() => controller.dispose());
 
   return controller;

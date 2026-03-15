@@ -1,7 +1,6 @@
-
-import '../../../core/database/user/user_entity.dart';
 import '../../../core/interfaces/base_result.dart';
 import '../../../core/interfaces/base_usecase.dart';
+import '../domain/entities/user_entity.dart';
 import '../domain/interfaces/login_repository_interface.dart';
 
 class LoginRequest extends Request {

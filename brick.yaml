@@ -2,7 +2,7 @@ name: artemis_project
 repository: https://github.com/MahmoodBakhshayesh/bricks-artemis_project
 description: A new brick created with the Mason CLI based on artemis structure.
 #version: 0.6.0+09
-version: 1.0.0+07
+version: 1.0.0+09
 
 
 # The following defines the environment for the current brick.

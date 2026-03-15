@@ -7,7 +7,7 @@ import 'usecases/get_flights_usecase.dart';
 final flightsControllerProvider = Provider.autoDispose((ref) {
   final getFlightsUsecase = GetIt.instance.get<GetFlightsUsecase>();
   final controller = FlightsController(ref, getFlightsUsecase);
-  controller.init();
+  Future.microtask(controller.init);
   ref.onDispose(() => controller.dispose());
   return controller;
 });

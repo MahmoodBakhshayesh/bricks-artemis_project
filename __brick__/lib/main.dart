@@ -45,10 +45,11 @@ void main() {
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
       await initializeStorages();
-      await initObjectBox();
+
 
       /// Initialize dependencies, including ConfigRepository
       initializeDependencies();
+      await initSembast();
 
       /// Register repositories
       registerGlobalRepositories();
@@ -76,4 +77,3 @@ void main() {
     },
   );
 }
-

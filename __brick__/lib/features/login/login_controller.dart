@@ -8,7 +8,7 @@ import 'usecases/login_usecase.dart';
 final loginControllerProvider = Provider.autoDispose((ref) {
   final loginUsecase = GetIt.instance.get<LoginUsecase>();
   final controller = LoginController(ref, loginUsecase);
-  controller.init();
+  Future.microtask(controller.init);
   ref.onDispose(() => controller.dispose());
   return controller;
 });
